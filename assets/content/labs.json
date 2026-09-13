@@ -1,0 +1,212 @@
+{
+  "labs": [
+    {
+      "id": "lab1", "module": "m1", "icon": "city",
+      "title": "Encuesta en Villa Muestra",
+      "subtitle": "600 residentes, 4 distritos, 5 formas de preguntar",
+      "description": "La app conoce la respuesta de cada residente: ¿usa transporte público a diario? Tú no. Encuesta con distintos métodos, repite muchas veces y compara hacia dónde apunta cada uno.",
+      "experiments": [
+        {
+          "id": "e1_1", "minRuns": 30, "tag": "muestra_grande_corrige_sesgo",
+          "title": "¿Muchos datos o buenos datos?",
+          "question": "¿Qué método dará estimaciones más cercanas al porcentaje real de residentes que usa transporte público?",
+          "predictions": [
+            {"text": "Conveniencia con n = 200: tiene ocho veces más datos", "feedback": "La simulación muestra lo contrario: 200 encuestas en la puerta del campus caen siempre lejos del valor real."},
+            {"text": "Aleatorio simple con n = 25: aunque varíe más, apunta al valor real", "correct": true, "feedback": "Correcto: sus estimaciones se dispersan, pero alrededor del valor verdadero."},
+            {"text": "Da igual: con 25 o más casos el método ya no importa", "feedback": "El método importa siempre: el sesgo no desaparece con n."}
+          ],
+          "instructions": "Pulsa «Encuestar» para que ambos métodos tomen una muestra. Cada punto es una estimación; la línea vertical es el porcentaje real de toda la ciudad. Repite al menos 30 veces.",
+          "reveal": "La conveniencia agrupa sus estimaciones con mucha precisión… alrededor de un valor equivocado. En la puerta del campus pasan sobre todo residentes del distrito Campus y usuarios de la parada de buses: su método apunta mal, y 200 casos solo lo hacen apuntar mal con más seguridad. El aleatorio simple con 25 se dispersa más, pero su centro coincide con la ciudad. Sesgo y variabilidad son problemas distintos: n solo arregla el segundo."
+        },
+        {
+          "id": "e1_2", "minRuns": 30, "tag": "estratificado_vs_conglomerados",
+          "title": "Estratos que ahorran muestra",
+          "question": "Con el mismo n = 40, ¿qué método produce estimaciones menos dispersas?",
+          "predictions": [
+            {"text": "Estratificado por distrito", "correct": true, "feedback": "Correcto: al fijar cuántos casos salen de cada distrito se elimina una fuente de variación."},
+            {"text": "Aleatorio simple: es el más puro", "feedback": "Ambos son insesgados, pero el estratificado varía menos cuando los estratos son muy distintos entre sí."},
+            {"text": "Ninguno: con el mismo n varían igual", "feedback": "El diseño también cambia la precisión, no solo el tamaño."}
+          ],
+          "instructions": "Pulsa «Encuestar» y compara la dispersión de los dos métodos. Observa el valor de la desviación de las estimaciones debajo de cada fila.",
+          "reveal": "Los cuatro distritos usan el transporte de forma muy distinta (del 10 % al 90 %). En el aleatorio simple, a veces salen «demasiados» residentes del Campus y otras veces demasiados de la Periferia, y eso mueve la estimación. El estratificado fija la cuota de cada distrito y elimina esa fuente de variación: con la misma n logra estimaciones más concentradas. Ojo: si sorteara distritos completos (conglomerados), pasaría lo contrario."
+        }
+      ]
+    },
+    {
+      "id": "lab2", "module": "m2", "icon": "machine",
+      "title": "Máquina de muestras",
+      "subtitle": "Construye la distribución muestral, media a media",
+      "description": "Elige una población, un tamaño de muestra y extrae muestras una a una o de mil en mil. Tres paneles: la población completa, la última muestra y el histograma de todas las medias.",
+      "experiments": [
+        {
+          "id": "e2_1", "minRuns": 500, "tag": "tlc_datos_normales",
+          "title": "La forma de las medias",
+          "question": "La población de tiempos de espera es muy asimétrica. Con muestras de n = 30, ¿cómo se repartirán las medias muestrales?",
+          "predictions": [
+            {"text": "Con la misma asimetría que la población", "feedback": "Esa es la forma de la población y de cada muestra, no la de las medias."},
+            {"text": "De forma aproximadamente normal", "correct": true, "feedback": "Correcto: es el Teorema del Límite Central en acción."},
+            {"text": "De forma plana, sin pico", "feedback": "Las medias se concentran alrededor de μ: siempre hay un pico."}
+          ],
+          "instructions": "Con la población «Asimétrica», compara n = 2 y n = 30. Extrae al menos 500 muestras con cada tamaño y observa el panel de medias.",
+          "reveal": "Con n = 2 las medias todavía heredan la cola derecha de la población. Con n = 30 el histograma de medias es casi simétrico y acampanado, aunque la población y cada muestra sigan siendo asimétricas. El TLC habla de la distribución de las medias: los datos individuales no cambian de forma."
+        },
+        {
+          "id": "e2_2", "minRuns": 500, "tag": "precision_lineal_n",
+          "title": "Cuatro veces más datos",
+          "question": "Si pasas de n = 25 a n = 100, ¿qué le ocurre a la dispersión de las medias muestrales?",
+          "predictions": [
+            {"text": "Se reduce a la cuarta parte", "feedback": "Eso ocurriría si dependiera de n; depende de √n."},
+            {"text": "Se reduce a la mitad", "correct": true, "feedback": "Correcto: √100 / √25 = 2."},
+            {"text": "No cambia: la población es la misma", "feedback": "La población no cambia, pero las medias de muestras más grandes se parecen más entre sí."}
+          ],
+          "instructions": "Usa cualquier población. Extrae 500 muestras con n = 25, anota el error estándar observado, cambia a n = 100 y repite.",
+          "reveal": "El error estándar observado cae casi exactamente a la mitad, como predice σ/√n. Cuadruplicar la muestra —y el costo de la encuesta— solo duplica la precisión. Por eso los estudios grandes mejoran cada vez menos por cada caso adicional."
+        },
+        {
+          "id": "e2_3", "minRuns": 5, "tag": "muestra_vs_distribucion_muestral",
+          "title": "¿Qué se vuelve normal?",
+          "question": "Tomas una sola muestra grande (n = 200) de la población asimétrica. ¿Qué forma tendrá el histograma de esa muestra?",
+          "predictions": [
+            {"text": "Normal, por el Teorema del Límite Central", "feedback": "El TLC no habla de los datos de una muestra, sino de las medias de muchas."},
+            {"text": "Asimétrica, parecida a la población", "correct": true, "feedback": "Correcto: una muestra grande es una buena copia de la población."},
+            {"text": "Plana", "feedback": "Una muestra aleatoria reproduce la forma de la población de la que sale."}
+          ],
+          "instructions": "Población «Asimétrica», n = 200. Extrae muestras de una en una y mira el panel central (la última muestra).",
+          "reveal": "Cuanto mayor es n, más se parece la muestra a la población: con 200 datos se ve claramente la cola derecha. Lo que se vuelve normal —y estrecho— es el panel de las medias. Confundir estos dos histogramas es la raíz de muchos errores al aplicar el TLC."
+        }
+      ]
+    },
+    {
+      "id": "lab3", "module": "m3", "icon": "rain",
+      "title": "Lluvia de intervalos",
+      "subtitle": "Cien investigadores, una μ escondida",
+      "description": "La app fija una media poblacional μ y cien investigadores construyen cada uno su intervalo con su propia muestra. Los que atrapan a μ se ven en ámbar; los que fallan, en rojo y con una marca. Tú controlas el nivel de confianza, n y el método.",
+      "experiments": [
+        {
+          "id": "e3_1", "minRuns": 100, "tag": "ic_probabilidad_parametro",
+          "title": "¿Cuántos atrapan a μ?",
+          "question": "Si cien investigadores construyen un IC al 95 %, ¿cuántos intervalos contendrán a μ?",
+          "predictions": [
+            {"text": "Todos: para eso es el 95 %", "feedback": "El método falla alrededor del 5 % de las veces; nadie sabe cuáles."},
+            {"text": "Alrededor de 95", "correct": true, "feedback": "Correcto: la tasa de acierto se acerca al 95 % a la larga."},
+            {"text": "Alrededor de 50", "feedback": "El 95 % describe precisamente la tasa de acierto del método."}
+          ],
+          "instructions": "Confianza 95 %, n = 20, método t. Genera al menos 100 intervalos y observa el contador de capturas.",
+          "reveal": "Cerca de 95 de cada 100 intervalos atrapan a μ; unos 5 fallan, y cada investigador solo ve el suyo. Por eso «95 % de confianza» describe el procedimiento, no un intervalo concreto: una vez calculado, ese intervalo contiene a μ o no. La confianza es la tasa de acierto del método."
+        },
+        {
+          "id": "e3_2", "minRuns": 100, "tag": "confianza_vs_amplitud",
+          "title": "Confianza contra amplitud",
+          "question": "Comparados con los intervalos al 80 %, ¿cómo son los intervalos al 99 %?",
+          "predictions": [
+            {"text": "Más estrechos: más confianza, más precisión", "feedback": "Es al revés: para fallar menos, el intervalo tiene que ser más ancho."},
+            {"text": "Más anchos, y fallan mucho menos", "correct": true, "feedback": "Correcto: se paga la confianza con amplitud."},
+            {"text": "Iguales: solo cambia la etiqueta", "feedback": "El valor crítico cambia de 1,28 a 2,58: el ancho casi se duplica."}
+          ],
+          "instructions": "Genera 100 intervalos al 80 %, observa ancho y capturas; cambia a 99 % y repite con el mismo n.",
+          "reveal": "Al 80 % los intervalos son estrechos y fallan uno de cada cinco; al 99 %, el ancho casi se duplica y los fallos se vuelven raros. Con la misma muestra no hay forma de ganar confianza y precisión a la vez: solo aumentar n estrecha el intervalo sin perder confianza."
+        },
+        {
+          "id": "e3_3", "minRuns": 200, "tag": "z_en_lugar_de_t",
+          "title": "El atajo z",
+          "question": "Con n = 5, si usas z = 1,96 con la s de la muestra (en lugar de t), ¿qué porcentaje de intervalos captura a μ?",
+          "predictions": [
+            {"text": "95 %, igual que con t", "feedback": "El atajo ignora que s también varía: los intervalos quedan cortos."},
+            {"text": "Claramente menos del 95 %", "correct": true, "feedback": "Correcto: alrededor del 88 % con n = 5."},
+            {"text": "Más del 95 %", "feedback": "z = 1,96 es menor que t = 2,776 (4 gl): los intervalos quedan más estrechos, no más anchos."}
+          ],
+          "instructions": "n = 5, confianza 95 %. Genera 200 intervalos con «z con s (atajo)», luego 200 con «t con s». Compara la tasa de captura.",
+          "reveal": "Con el atajo la captura ronda el 88 %: se promete un 95 % que no se cumple. En muestras pequeñas s a veces sale bastante menor que σ, y z no lo compensa. La t con 4 grados de libertad usa 2,776 en lugar de 1,96 y recupera el 95 %. Con n = 30 el atajo se acerca al 94 %, y la diferencia deja de ser grave."
+        }
+      ]
+    },
+    {
+      "id": "lab4", "module": "m4", "icon": "world",
+      "title": "El mundo de H0",
+      "subtitle": "Simula lo que pasaría si no pasara nada",
+      "description": "El p-valor es una pregunta sobre un mundo hipotético. Aquí ese mundo existe: la app simula miles de repeticiones bajo H0 para que veas de dónde sale el p-valor, cuántas falsas alarmas produce α y cuánta potencia tiene tu estudio.",
+      "experiments": [
+        {
+          "id": "e4_1", "minRuns": 1000, "tag": "p_prob_h0",
+          "title": "¿Adivina o tiene suerte?",
+          "question": "Tu compañero acierta 16 de 25 lanzamientos de moneda. Si solo adivinara al azar, ¿con qué frecuencia acertaría 16 o más?",
+          "predictions": [
+            {"text": "Casi nunca, menos del 1 %", "feedback": "16 de 25 impresiona, pero el azar lo produce con más frecuencia de lo que parece."},
+            {"text": "Aproximadamente 1 de cada 9 veces", "correct": true, "feedback": "Correcto: P(X ≥ 16) ≈ 0,115."},
+            {"text": "La mitad de las veces", "feedback": "La mitad de las veces acertaría 13 o más, no 16 o más."}
+          ],
+          "instructions": "Simula al menos 1 000 series de 25 lanzamientos en el mundo donde H0: p = 0,5 es cierta. La zona roja son las series con 16 o más aciertos. Mueve el número observado para ver cómo cambia el p-valor.",
+          "reveal": "Alrededor del 11 % de las series puramente aleatorias llega a 16 aciertos: ese porcentaje es el p-valor. No dice que haya un 11 % de probabilidad de que tu compañero no tenga ningún don; dice que, si no lo tuviera, un resultado así aparecería una de cada nueve veces. No es evidencia suficiente. Con 20 de 25, en cambio, el p-valor cae por debajo de 0,003."
+        },
+        {
+          "id": "e4_2", "minRuns": 1000, "tag": "errores_tipo_confundidos",
+          "title": "Falsas alarmas",
+          "question": "Si H0 es cierta y 1 000 equipos hacen el estudio con α = 0,05, ¿cuántos rechazarán H0?",
+          "predictions": [
+            {"text": "Ninguno: si H0 es cierta no se rechaza", "feedback": "Con α = 0,05 aceptas de antemano un 5 % de falsas alarmas."},
+            {"text": "Alrededor de 50", "correct": true, "feedback": "Correcto: la tasa de error tipo I es α."},
+            {"text": "Alrededor de 500", "feedback": "Eso sería α = 0,5."}
+          ],
+          "instructions": "Deja el efecto real en 0 (H0 cierta). Ejecuta al menos 1 000 estudios y observa la tasa de rechazo y el histograma de p-valores.",
+          "reveal": "Alrededor del 5 % de los estudios rechaza H0 aunque sea cierta: son errores tipo I, y su frecuencia es exactamente α. Además, con H0 cierta los p-valores se reparten de forma plana entre 0 y 1: un p-valor de 0,03 es tan «normal» como uno de 0,73. Por eso un único resultado significativo no es una prueba definitiva."
+        },
+        {
+          "id": "e4_3", "minRuns": 500, "tag": "baja_potencia",
+          "title": "Potencia: ¿lo detectarías?",
+          "question": "El efecto real es de 0,3 desviaciones estándar, n = 20 y α = 0,05 bilateral. ¿Qué fracción de estudios detecta el efecto?",
+          "predictions": [
+            {"text": "Casi todos, más del 90 %", "feedback": "Con n = 20 un efecto de 0,3σ es difícil de detectar."},
+            {"text": "Alrededor de uno de cada cuatro", "correct": true, "feedback": "Correcto: la potencia ronda el 25 %."},
+            {"text": "Exactamente el 5 %", "feedback": "El 5 % es la tasa de rechazo cuando no hay efecto."}
+          ],
+          "instructions": "Efecto 0,3σ y n = 20: ejecuta 500 estudios y mira la tasa de rechazo. Luego sube n hasta que la potencia supere el 80 %.",
+          "reveal": "Solo alrededor de uno de cada cuatro estudios detecta un efecto que sí existe: tres de cada cuatro concluirían «no hay diferencia significativa». Hace falta cerca de n = 90 para una potencia del 80 %. Un resultado no significativo en un estudio pequeño no demuestra ausencia de efecto: puede ser solo falta de potencia."
+        }
+      ]
+    },
+    {
+      "id": "lab5", "module": "m5", "icon": "room",
+      "title": "Sala de decisiones",
+      "subtitle": "Inferencia sin fórmulas y sus trampas",
+      "description": "Tres situaciones que un profesional encuentra fuera del aula: decidir con una prueba por permutación, sobrevivir a las comparaciones múltiples y distinguir un efecto significativo de uno que importa.",
+      "experiments": [
+        {
+          "id": "e5_1", "minRuns": 1000, "tag": "observacional_causal",
+          "title": "Barajar etiquetas",
+          "question": "24 estudiantes fueron asignados al azar a dos métodos de enseñanza; el grupo de aprendizaje activo sacó 2,08 puntos más (escala 0–20). Si el método no importara, ¿con qué frecuencia una asignación al azar produciría una diferencia así?",
+          "predictions": [
+            {"text": "Muy rara vez, alrededor del 1 %", "correct": true, "feedback": "Correcto: casi ninguna barajada llega a 2,08 puntos."},
+            {"text": "Alrededor de una vez de cada tres", "feedback": "La simulación muestra que es mucho más raro."},
+            {"text": "Imposible saberlo sin una fórmula", "feedback": "Barajar las etiquetas responde la pregunta sin fórmula alguna."}
+          ],
+          "instructions": "Pulsa «Barajar» para reasignar al azar las 24 notas en dos grupos de 12, como si el método no importara. Repite al menos 1 000 veces y compara con la diferencia observada.",
+          "reveal": "Solo alrededor del 1 % de las reasignaciones al azar produce una diferencia de 2,08 puntos o más (en valor absoluto): ese es el p-valor, obtenido sin ninguna fórmula. Como los estudiantes fueron asignados al azar a cada método, la diferencia puede atribuirse al método. Si los grupos se hubieran formado solos (quienes eligieron cada método), el mismo p-valor no permitiría hablar de causa."
+        },
+        {
+          "id": "e5_2", "minRuns": 100, "tag": "comparaciones_multiples",
+          "title": "El jardín de las comparaciones",
+          "question": "Un analista hace 20 comparaciones entre grupos donde no hay ninguna diferencia real (α = 0,05 cada una). ¿Qué probabilidad hay de encontrar al menos una «significativa»?",
+          "predictions": [
+            {"text": "5 %", "feedback": "El 5 % es para una sola prueba; con 20 los riesgos se acumulan."},
+            {"text": "Alrededor del 64 %", "correct": true, "feedback": "Correcto: 1 − 0,95²⁰ ≈ 0,64."},
+            {"text": "100 %", "feedback": "Es probable, pero no seguro."}
+          ],
+          "instructions": "Cada «analista» hace 20 pruebas sobre ruido puro. Simula al menos 100 analistas y cuenta cuántos encontraron algo «significativo». Prueba luego la corrección de Bonferroni.",
+          "reveal": "Cerca de dos de cada tres analistas «descubren» algo en datos donde no hay nada. Si solo publicaran ese hallazgo, parecería un resultado sólido. Con la corrección de Bonferroni (α/20 = 0,0025 por prueba), la tasa de falsos descubrimientos por analista vuelve a rondar el 5 %."
+        },
+        {
+          "id": "e5_3", "minRuns": 20, "tag": "significativo_importante",
+          "title": "Significativo pero irrelevante",
+          "question": "Una actualización reduce el tiempo de carga en 0,02 s (desviación 0,9 s). Con 50 000 usuarios por grupo, ¿qué resultado esperas?",
+          "predictions": [
+            {"text": "No significativo: el efecto es minúsculo", "feedback": "Con 50 000 por grupo, hasta 0,02 s se detecta."},
+            {"text": "Muy significativo, aunque el efecto sea irrelevante", "correct": true, "feedback": "Correcto: p muy pequeño, d de Cohen ≈ 0,02."},
+            {"text": "Imposible de calcular con tantos datos", "feedback": "Se calcula igual; lo que cambia es la interpretación."}
+          ],
+          "instructions": "Ejecuta estudios con n = 500 por grupo y luego con n = 50 000. El efecto real no cambia; observa qué pasa con el p-valor y con la d de Cohen.",
+          "reveal": "Con n = 500 casi ningún estudio sale significativo; con n = 50 000 casi todos, con p-valores diminutos. El efecto real es el mismo en ambos casos: 0,02 s, imperceptible para un usuario. El p-valor mide evidencia contra «efecto cero», no la importancia del efecto. Reporta siempre el tamaño del efecto y su intervalo."
+        }
+      ]
+    }
+  ]
+}

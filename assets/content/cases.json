@@ -1,0 +1,549 @@
+{
+  "cases": [
+    {
+      "id": "case_minas", "career": "Ingeniería de Minas", "icon": "terrain", "difficulty": 2, "modules": ["m4", "m5"],
+      "title": "¿Vale la pena el nuevo tajo?",
+      "role": "Eres ingeniero de planeamiento de una mina de cobre a tajo abierto.",
+      "brief": "El directorio solo aprobará la inversión en un nuevo tajo si la ley media del mineral supera 0,80 % Cu, el umbral de rentabilidad. Se perforaron 18 sondajes en puntos elegidos al azar dentro del área.",
+      "question": "¿Hay evidencia suficiente, al 5 %, de que la ley media supera 0,80 %?",
+      "data": [
+        {"label": "Sondajes (n)", "value": "18"},
+        {"label": "Ley media (x̄)", "value": "0,86 % Cu"},
+        {"label": "Desviación estándar (s)", "value": "0,11 % Cu"},
+        {"label": "Umbral de rentabilidad", "value": "0,80 % Cu"}
+      ],
+      "analysis": {"fn": "test_mean_t", "alpha": 0.05, "args": {"mean": 0.86, "sd": 0.11, "n": 18, "mu0": 0.80, "tail": "greater"}},
+      "expectedReject": true,
+      "verify": [
+        {"fn": "test_mean_t", "args": {"mean": 0.86, "sd": 0.11, "n": 18, "mu0": 0.80, "tail": "greater"}, "field": "statistic", "value": 2.31, "tol": 0.005},
+        {"fn": "test_mean_t", "args": {"mean": 0.86, "sd": 0.11, "n": 18, "mu0": 0.80, "tail": "greater"}, "field": "p", "value": 0.017, "tol": 0.0005}
+      ],
+      "steps": [
+        {"type": "choice", "title": "Parámetro", "prompt": "¿Sobre qué parámetro trata la decisión?",
+         "options": [
+           {"text": "μ: la ley media de todo el mineral del área", "correct": true, "feedback": "Correcto: la inversión depende del mineral que se extraerá, no de los 18 sondajes."},
+           {"text": "x̄: la ley media de los 18 sondajes", "tag": "parametro_vs_estadistico", "feedback": "x̄ = 0,86 ya se conoce. La pregunta es qué dice sobre el mineral no perforado."},
+           {"text": "La proporción de sondajes por encima de 0,80 %", "tag": "procedimiento_equivocado", "feedback": "La rentabilidad depende de la ley media, una variable numérica, no de un conteo."}
+         ]},
+        {"type": "choice", "title": "Hipótesis", "prompt": "¿Qué hipótesis corresponden a la pregunta del directorio?",
+         "options": [
+           {"text": "H0: μ ≤ 0,80   H1: μ > 0,80", "correct": true, "feedback": "Correcto: la viabilidad es lo que requiere evidencia antes de invertir."},
+           {"text": "H0: μ ≥ 0,80   H1: μ < 0,80", "tag": "cola_mal_elegida", "feedback": "Así se exigiría evidencia de que el tajo NO es viable, y ante la duda se invertiría: el riesgo quedaría del lado caro."},
+           {"text": "H0: μ = 0,80   H1: μ ≠ 0,80", "tag": "cola_mal_elegida", "feedback": "Una ley significativamente menor no aprobaría nada: la pregunta es direccional."}
+         ]},
+        {"type": "choice", "title": "Procedimiento y condiciones", "prompt": "¿Qué procedimiento es adecuado?",
+         "options": [
+           {"text": "Prueba t de una media: σ desconocida, sondajes al azar y leyes sin asimetría fuerte", "correct": true, "feedback": "Correcto. Con n = 18 conviene revisar que no haya valores extremos en los sondajes."},
+           {"text": "Prueba z con σ = 0,11", "tag": "z_en_lugar_de_t", "feedback": "0,11 es s, calculada con los mismos 18 datos: corresponde t con 17 gl."},
+           {"text": "No se puede hacer inferencia con menos de 30 sondajes", "tag": "condiciones_ignoradas", "feedback": "La t funciona con n pequeño si la distribución no es muy asimétrica."}
+         ]},
+        {"type": "compute", "title": "Cálculo", "prompt": "La app calcula la prueba con los datos de los sondajes.",
+         "note": "t = (0,86 − 0,80) / (0,11/√18). Observa dónde cae t en la distribución de H0."},
+        {"type": "choice", "title": "Decisión", "prompt": "Con t ≈ 2,31 y p ≈ 0,017, ¿qué decides con α = 0,05?",
+         "options": [
+           {"text": "Rechazar H0: hay evidencia de que la ley media supera 0,80 %", "correct": true, "feedback": "Correcto: p = 0,017 ≤ 0,05."},
+           {"text": "No rechazar H0, porque 0,86 está muy cerca de 0,80", "tag": "variabilidad_muestral_error", "feedback": "«Cerca» se mide en errores estándar: 0,06 son 2,3 EE, algo poco frecuente si μ fuera 0,80."},
+           {"text": "Rechazar H0: hay un 98,3 % de probabilidad de que el tajo sea rentable", "tag": "p_prob_h0", "feedback": "La decisión es correcta, la frase no: 1 − p no es la probabilidad de H1."}
+         ]},
+        {"type": "choice", "title": "Riesgo", "prompt": "Si la decisión fuera equivocada, ¿qué error sería y qué costaría?",
+         "options": [
+           {"text": "Error tipo I: invertir en un tajo que en realidad no es rentable", "correct": true, "feedback": "Correcto: por eso la viabilidad se puso en H1 y el riesgo de ese error se limita a α = 5 %."},
+           {"text": "Error tipo II: dejar pasar un tajo rentable", "tag": "errores_tipo_confundidos", "feedback": "Ese error solo es posible cuando no se rechaza H0. Aquí se rechazó."},
+           {"text": "Ninguno: con p < 0,05 la decisión es segura", "tag": "p_prob_h0", "feedback": "Rechazar H0 siempre deja abierta la posibilidad de un error tipo I."}
+         ]}
+      ],
+      "debrief": "La ley media estimada es 0,86 % y la prueba unilateral da p ≈ 0,017: hay evidencia, al 5 %, de que la ley supera el umbral. El diseño de las hipótesis protegió al directorio del error más caro, invertir en un tajo no rentable. Un informe completo añadiría el intervalo (IC 95 %: 0,81 %–0,91 %) y advertiría que 18 sondajes al azar suponen que la mineralización no tiene zonas que las perforaciones no alcanzaron."
+    },
+    {
+      "id": "case_ambiental", "career": "Ingeniería Ambiental", "icon": "water", "difficulty": 3, "modules": ["m4", "m5"],
+      "title": "Plomo aguas abajo",
+      "role": "Eres especialista en monitoreo ambiental de la autoridad regional del agua.",
+      "brief": "Una planta de procesamiento vierte efluentes a un río. Su permiso fija un límite de 0,050 mg/L de plomo como concentración media aguas abajo. Tomaste 12 muestras en fechas y puntos elegidos al azar durante un trimestre.",
+      "question": "¿Hay evidencia, al 5 %, de que la concentración media supera el límite?",
+      "data": [
+        {"label": "Muestras (n)", "value": "12"},
+        {"label": "Concentración media (x̄)", "value": "0,056 mg/L"},
+        {"label": "Desviación estándar (s)", "value": "0,012 mg/L"},
+        {"label": "Límite del permiso", "value": "0,050 mg/L"}
+      ],
+      "analysis": {"fn": "test_mean_t", "alpha": 0.05, "args": {"mean": 0.056, "sd": 0.012, "n": 12, "mu0": 0.050, "tail": "greater"}},
+      "expectedReject": false,
+      "verify": [
+        {"fn": "test_mean_t", "args": {"mean": 0.056, "sd": 0.012, "n": 12, "mu0": 0.050, "tail": "greater"}, "field": "statistic", "value": 1.73, "tol": 0.005},
+        {"fn": "test_mean_t", "args": {"mean": 0.056, "sd": 0.012, "n": 12, "mu0": 0.050, "tail": "greater"}, "field": "p", "value": 0.056, "tol": 0.0005}
+      ],
+      "steps": [
+        {"type": "choice", "title": "Hipótesis", "prompt": "Para sancionar se necesita evidencia de incumplimiento. ¿Qué hipótesis planteas?",
+         "options": [
+           {"text": "H0: μ ≤ 0,050   H1: μ > 0,050", "correct": true, "feedback": "Correcto: el incumplimiento, que conlleva sanción, debe demostrarse."},
+           {"text": "H0: x̄ ≤ 0,050   H1: x̄ > 0,050", "tag": "hipotesis_con_estadistico", "feedback": "x̄ = 0,056 ya supera 0,050: no hay nada que probar sobre él. La pregunta es sobre μ."},
+           {"text": "H0: μ = 0,056   H1: μ ≠ 0,056", "tag": "parametro_vs_estadistico", "feedback": "El valor de referencia es el límite del permiso, no el resultado de la muestra."}
+         ]},
+        {"type": "choice", "title": "Condiciones", "prompt": "¿Qué condición es la más delicada en este caso?",
+         "options": [
+           {"text": "Que las 12 muestras sean independientes y representativas del trimestre (sin concentrarse en días de lluvia o de baja producción)", "correct": true, "feedback": "Correcto: el azar en fechas y puntos es lo que permite generalizar al trimestre."},
+           {"text": "Que n sea al menos 30", "tag": "condiciones_ignoradas", "feedback": "Con concentraciones sin asimetría fuerte, la t funciona con n = 12. El diseño del muestreo importa más."},
+           {"text": "Que σ sea conocida", "tag": "z_en_lugar_de_t", "feedback": "Justamente porque σ es desconocida se usa la t."}
+         ]},
+        {"type": "compute", "title": "Cálculo", "prompt": "La app ejecuta la prueba t unilateral.",
+         "note": "t = (0,056 − 0,050) / (0,012/√12), con 11 grados de libertad."},
+        {"type": "choice", "title": "Decisión", "prompt": "t ≈ 1,73 y p ≈ 0,056. ¿Qué decides con α = 0,05?",
+         "options": [
+           {"text": "No rechazar H0", "correct": true, "feedback": "Correcto: 0,056 > 0,05, aunque por muy poco."},
+           {"text": "Rechazar H0: x̄ supera el límite", "tag": "hipotesis_con_estadistico", "feedback": "Que x̄ supere el límite no basta: la diferencia no alcanza a ser improbable bajo H0 con 12 muestras."},
+           {"text": "Usar α = 0,10 para poder sancionar", "tag": "alfa_vs_p", "feedback": "Cambiar α después de ver p convierte la prueba en un trámite para llegar a la conclusión deseada."}
+         ]},
+        {"type": "choice", "title": "Conclusión", "prompt": "¿Qué informas?",
+         "options": [
+           {"text": "No hay evidencia suficiente de incumplimiento; se recomienda ampliar el monitoreo porque el estudio tiene poca potencia", "correct": true, "feedback": "Correcto: la conclusión es «no concluyente», y la acción profesional es conseguir más evidencia."},
+           {"text": "La planta cumple con el límite de plomo", "tag": "no_rechazar_es_aceptar", "feedback": "No se demostró cumplimiento: la media estimada está incluso por encima del límite."},
+           {"text": "Hay un 5,6 % de probabilidad de que la planta cumpla", "tag": "p_prob_h0", "feedback": "El p-valor no es la probabilidad de cumplir."}
+         ]},
+        {"type": "choice", "title": "Riesgo", "prompt": "Si la planta en realidad incumple, ¿qué error se estaría cometiendo?",
+         "options": [
+           {"text": "Error tipo II, y con 12 muestras su probabilidad puede ser alta", "correct": true, "feedback": "Correcto: con poca potencia, un incumplimiento real puede pasar sin detectarse."},
+           {"text": "Error tipo I", "tag": "errores_tipo_confundidos", "feedback": "El tipo I sería sancionar a una planta que cumple. Aquí no se rechazó H0."},
+           {"text": "Ninguno, porque no se rechazó H0", "tag": "baja_potencia", "feedback": "No rechazar también puede ser un error: el tipo II."}
+         ]}
+      ],
+      "debrief": "Con 12 muestras, p ≈ 0,056: no hay evidencia suficiente al 5 % de que la media supere el límite, pero tampoco de que lo cumpla —la estimación puntual, 0,056 mg/L, está por encima—. El caso muestra por qué la elección de H0 es una decisión regulatoria: quien carga con la prueba pierde cuando la evidencia es escasa. La respuesta profesional no es «cumple», sino ampliar el muestreo. Con σ ≈ 0,012 y un exceso real de 0,006 mg/L, harían falta alrededor de 25 muestras para una potencia del 80 %."
+    },
+    {
+      "id": "case_sistemas", "career": "Ingeniería de Sistemas", "icon": "click", "difficulty": 2, "modules": ["m5"],
+      "title": "El botón que convierte",
+      "role": "Eres analista de producto en una startup de educación en línea.",
+      "brief": "Se probó un nuevo botón de registro. Durante dos semanas, cada visitante fue asignado al azar a la versión actual (A) o a la nueva (B).",
+      "question": "¿La nueva versión cambia la tasa de registro? Estima también cuánto.",
+      "data": [
+        {"label": "Versión B (nueva)", "value": "296 registros de 4 000 visitas (7,4 %)"},
+        {"label": "Versión A (actual)", "value": "248 registros de 4 000 visitas (6,2 %)"},
+        {"label": "Asignación", "value": "Aleatoria por visitante"},
+        {"label": "Nivel de significancia", "value": "α = 0,05, bilateral"}
+      ],
+      "analysis": {"fn": "test_diff_props", "alpha": 0.05, "args": {"x1": 296, "n1": 4000, "x2": 248, "n2": 4000, "tail": "two"},
+                   "companion": {"fn": "ci_diff_props", "args": {"x1": 296, "n1": 4000, "x2": 248, "n2": 4000, "conf": 0.95}}},
+      "expectedReject": true,
+      "verify": [
+        {"fn": "test_diff_props", "args": {"x1": 296, "n1": 4000, "x2": 248, "n2": 4000, "tail": "two"}, "field": "statistic", "value": 2.13, "tol": 0.005},
+        {"fn": "test_diff_props", "args": {"x1": 296, "n1": 4000, "x2": 248, "n2": 4000, "tail": "two"}, "field": "p", "value": 0.033, "tol": 0.0005},
+        {"fn": "ci_diff_props", "args": {"x1": 296, "n1": 4000, "x2": 248, "n2": 4000, "conf": 0.95}, "field": "lower", "value": 0.001, "tol": 0.0005},
+        {"fn": "ci_diff_props", "args": {"x1": 296, "n1": 4000, "x2": 248, "n2": 4000, "conf": 0.95}, "field": "upper", "value": 0.023, "tol": 0.0005}
+      ],
+      "steps": [
+        {"type": "choice", "title": "Procedimiento", "prompt": "¿Qué procedimiento corresponde?",
+         "options": [
+           {"text": "Prueba de dos proporciones independientes (e IC para p_B − p_A)", "correct": true, "feedback": "Correcto: variable sí/no en dos grupos distintos."},
+           {"text": "Prueba de una proporción: 7,4 % frente a 6,2 %", "tag": "procedimiento_equivocado", "feedback": "6,2 % también es una estimación con su propio error; tratarlo como valor fijo subestima la incertidumbre."},
+           {"text": "Prueba t de dos medias", "tag": "procedimiento_equivocado", "feedback": "La variable es registrarse o no: son proporciones."}
+         ]},
+        {"type": "choice", "title": "Condiciones", "prompt": "¿Se cumplen las condiciones?",
+         "options": [
+           {"text": "Sí: asignación aleatoria y cientos de éxitos y fracasos en cada grupo", "correct": true, "feedback": "Correcto: 296 y 248 éxitos, miles de fracasos."},
+           {"text": "No: la proporción es menor que 10 %", "tag": "condiciones_ignoradas", "feedback": "La condición es sobre el número de éxitos esperados (n·p ≥ 10), no sobre p."},
+           {"text": "Sí, porque 4 000 es más del 10 % de los visitantes del mes", "feedback": "Esa condición no es la relevante; lo importante es la asignación aleatoria y los conteos."}
+         ]},
+        {"type": "compute", "title": "Cálculo", "prompt": "La app calcula la prueba con proporción combinada y el IC para la diferencia.",
+         "note": "Bajo H0 ambas tasas son iguales, por eso el error estándar de la prueba usa la proporción combinada (0,068)."},
+        {"type": "choice", "title": "Decisión", "prompt": "z ≈ 2,13, p ≈ 0,033; IC 95 % para p_B − p_A: (0,001; 0,023). ¿Qué concluyes?",
+         "options": [
+           {"text": "Hay evidencia de que B aumenta la tasa de registro, entre 0,1 y 2,3 puntos porcentuales", "correct": true, "feedback": "Correcto: se rechaza H0 y el IC cuantifica la mejora."},
+           {"text": "B aumenta la tasa en exactamente 1,2 puntos", "tag": "parametro_vs_estadistico", "feedback": "1,2 es la estimación puntual. El aumento real puede estar entre 0,1 y 2,3 puntos."},
+           {"text": "Hay un 96,7 % de probabilidad de que B sea mejor", "tag": "p_prob_h0", "feedback": "1 − p no es la probabilidad de H1."}
+         ]},
+        {"type": "choice", "title": "Relevancia", "prompt": "El equipo pregunta si vale la pena. ¿Qué observas?",
+         "options": [
+           {"text": "El límite inferior (0,1 puntos) es casi nulo: la mejora podría ser mínima y conviene valorar el costo del cambio", "correct": true, "feedback": "Correcto: significativo no garantiza una mejora grande."},
+           {"text": "Con p < 0,05 la mejora es importante", "tag": "significativo_importante", "feedback": "El p-valor no mide el tamaño de la mejora."},
+           {"text": "Como fue aleatorizado, la mejora es de al menos 1,2 puntos", "tag": "ic_probabilidad_parametro", "feedback": "La aleatorización permite atribuir la diferencia al botón, pero no fija su tamaño."}
+         ]},
+        {"type": "choice", "title": "Trampa", "prompt": "Un compañero propone repetir la prueba cada día y detenerla el primer día que salga p < 0,05. ¿Qué opinas?",
+         "options": [
+           {"text": "Es un error: mirar repetidamente y parar al primer éxito infla el error tipo I", "correct": true, "feedback": "Correcto: equivale a hacer muchas pruebas y quedarse con la que conviene."},
+           {"text": "Es eficiente: se ahorra tiempo", "tag": "comparaciones_multiples", "feedback": "Ahorra tiempo a costa de declarar ganadores falsos con mucha más frecuencia que el 5 %."},
+           {"text": "Es correcto si se usa α = 0,10", "tag": "alfa_vs_p", "feedback": "Subir α no resuelve el problema de mirar muchas veces."}
+         ]}
+      ],
+      "debrief": "La nueva versión aumenta la tasa de registro (p ≈ 0,033) y, gracias a la asignación aleatoria, la mejora puede atribuirse al botón. Pero el IC (0,1 a 2,3 puntos) muestra que el efecto real podría ser casi nulo o bastante valioso: la decisión depende del costo del cambio. Los experimentos A/B tienen dos trampas clásicas: detenerlos al primer p < 0,05 y probar muchas variantes a la vez sin corregir α."
+    },
+    {
+      "id": "case_electronica", "career": "Ingeniería Electrónica", "icon": "memory", "difficulty": 2, "modules": ["m3", "m4"],
+      "title": "Resistencias fuera de calibración",
+      "role": "Eres ingeniero de calidad en una planta de componentes electrónicos.",
+      "brief": "La línea produce resistencias de 100 Ω nominales con tolerancia individual de ±5 %. Tras un mantenimiento, se miden 25 resistencias al azar para comprobar si el proceso sigue centrado en 100 Ω.",
+      "question": "¿La media del proceso se desplazó respecto de 100 Ω?",
+      "data": [
+        {"label": "Resistencias medidas (n)", "value": "25"},
+        {"label": "Media (x̄)", "value": "100,9 Ω"},
+        {"label": "Desviación estándar (s)", "value": "2,0 Ω"},
+        {"label": "Valor nominal", "value": "100 Ω (tolerancia ±5 %)"}
+      ],
+      "analysis": {"fn": "test_mean_t", "alpha": 0.05, "args": {"mean": 100.9, "sd": 2.0, "n": 25, "mu0": 100, "tail": "two"},
+                   "companion": {"fn": "ci_mean_t", "args": {"mean": 100.9, "sd": 2.0, "n": 25, "conf": 0.95}}},
+      "expectedReject": true,
+      "verify": [
+        {"fn": "test_mean_t", "args": {"mean": 100.9, "sd": 2.0, "n": 25, "mu0": 100, "tail": "two"}, "field": "statistic", "value": 2.25, "tol": 0.001},
+        {"fn": "test_mean_t", "args": {"mean": 100.9, "sd": 2.0, "n": 25, "mu0": 100, "tail": "two"}, "field": "p", "value": 0.034, "tol": 0.0005},
+        {"fn": "ci_mean_t", "args": {"mean": 100.9, "sd": 2.0, "n": 25, "conf": 0.95}, "field": "lower", "value": 100.07, "tol": 0.005},
+        {"fn": "ci_mean_t", "args": {"mean": 100.9, "sd": 2.0, "n": 25, "conf": 0.95}, "field": "upper", "value": 101.73, "tol": 0.005}
+      ],
+      "steps": [
+        {"type": "choice", "title": "Hipótesis", "prompt": "¿Qué hipótesis planteas?",
+         "options": [
+           {"text": "H0: μ = 100   H1: μ ≠ 100", "correct": true, "feedback": "Correcto: un desplazamiento en cualquier dirección indica descalibración."},
+           {"text": "H0: μ = 100   H1: μ > 100", "tag": "cola_mal_elegida", "feedback": "Elegirías la dirección porque x̄ salió mayor: la pregunta de calidad es bilateral."},
+           {"text": "H0: x̄ = 100   H1: x̄ ≠ 100", "tag": "hipotesis_con_estadistico", "feedback": "Las hipótesis son sobre la media del proceso, μ."}
+         ]},
+        {"type": "compute", "title": "Cálculo", "prompt": "La app calcula la prueba t bilateral y el IC al 95 %.",
+         "note": "t = (100,9 − 100) / (2,0/√25) = 0,9/0,4."},
+        {"type": "choice", "title": "Decisión", "prompt": "t = 2,25; p ≈ 0,034; IC 95 %: (100,07; 101,73) Ω. ¿Qué concluyes?",
+         "options": [
+           {"text": "La media del proceso se desplazó: está entre 0,07 y 1,73 Ω por encima de 100", "correct": true, "feedback": "Correcto: 100 queda fuera del IC y p < 0,05."},
+           {"text": "El 95 % de las resistencias mide entre 100,07 y 101,73 Ω", "tag": "ic_contiene_datos", "feedback": "El IC es para la media. Con s = 2 Ω, las resistencias individuales varían entre ~97 y ~105 Ω."},
+           {"text": "No hay desplazamiento porque 0,9 Ω es menos del 1 %", "tag": "significativo_importante", "feedback": "El tamaño y la significancia son preguntas distintas: el desplazamiento es real aunque sea pequeño."}
+         ]},
+        {"type": "choice", "title": "Relevancia", "prompt": "Todas las resistencias medidas están dentro de la tolerancia de ±5 %. ¿Qué recomiendas?",
+         "options": [
+           {"text": "Liberar el lote, pero recalibrar la línea: el proceso se descentró y seguirá produciendo sesgado", "correct": true, "feedback": "Correcto: el desplazamiento no afecta aún al cumplimiento, pero reduce el margen frente a la tolerancia."},
+           {"text": "Rechazar el lote porque la prueba fue significativa", "tag": "significativo_importante", "feedback": "El lote cumple la especificación; la significancia habla del proceso, no de cada pieza."},
+           {"text": "No hacer nada: todo está dentro de tolerancia", "tag": "no_rechazar_es_aceptar", "feedback": "El desplazamiento es real: ignorarlo acerca el proceso a producir piezas fuera de tolerancia."}
+         ]},
+        {"type": "choice", "title": "Riesgo", "prompt": "Si en realidad el proceso seguía centrado, ¿qué error se habría cometido?",
+         "options": [
+           {"text": "Error tipo I: recalibrar sin necesidad, con α = 5 % de probabilidad", "correct": true, "feedback": "Correcto: una falsa alarma, cuyo costo aquí es moderado."},
+           {"text": "Error tipo II", "tag": "errores_tipo_confundidos", "feedback": "El tipo II sería no detectar un desplazamiento real."},
+           {"text": "Ningún error es posible con p = 0,034", "tag": "p_prob_h0", "feedback": "Toda decisión de rechazar tiene riesgo de tipo I."}
+         ]}
+      ],
+      "debrief": "La media del proceso se desplazó (p ≈ 0,034; IC 95 %: 100,07–101,73 Ω). Es un efecto real y pequeño: no compromete el lote, pero sí la capacidad del proceso de mantenerse dentro de ±5 % a largo plazo. En control de calidad, significancia estadística y especificación técnica son dos preguntas distintas que se responden por separado."
+    },
+    {
+      "id": "case_administracion", "career": "Administración", "icon": "storefront", "difficulty": 2, "modules": ["m3"],
+      "title": "¿Lanzamos la suscripción?",
+      "role": "Eres jefa de planeamiento comercial de una cadena de gimnasios.",
+      "brief": "El plan de negocio de una suscripción premium es viable si al menos el 30 % de los clientes actuales la contrataría. Se encuestó a 400 clientes elegidos al azar de la base de datos.",
+      "question": "¿Qué rango de proporciones es plausible y alcanza para decidir?",
+      "data": [
+        {"label": "Clientes encuestados (n)", "value": "400, al azar de la base"},
+        {"label": "Dispuestos a contratar", "value": "132 (33 %)"},
+        {"label": "Umbral de viabilidad", "value": "30 %"},
+        {"label": "Nivel de confianza", "value": "95 %"}
+      ],
+      "analysis": {"fn": "ci_prop", "args": {"x": 132, "n": 400, "conf": 0.95}},
+      "verify": [
+        {"fn": "ci_prop", "args": {"x": 132, "n": 400, "conf": 0.95}, "field": "lower", "value": 0.284, "tol": 0.0005},
+        {"fn": "ci_prop", "args": {"x": 132, "n": 400, "conf": 0.95}, "field": "upper", "value": 0.376, "tol": 0.0005},
+        {"fn": "n_prop", "args": {"p": 0.33, "E": 0.03, "conf": 0.95}, "field": "n", "value": 944, "tol": 0.1}
+      ],
+      "steps": [
+        {"type": "choice", "title": "Parámetro", "prompt": "¿Qué quieres estimar?",
+         "options": [
+           {"text": "p: la proporción de todos los clientes que contrataría", "correct": true, "feedback": "Correcto."},
+           {"text": "p̂ = 0,33", "tag": "parametro_vs_estadistico", "feedback": "p̂ ya se conoce; es la base de la estimación."},
+           {"text": "La proporción de toda la población de la ciudad", "tag": "poblacion_objetivo_mal_definida", "feedback": "Se sorteó entre clientes actuales: la conclusión vale para ellos."}
+         ]},
+        {"type": "choice", "title": "Condiciones", "prompt": "¿Es válido el intervalo normal para p?",
+         "options": [
+           {"text": "Sí: muestra aleatoria, 132 éxitos y 268 fracasos, ambos ≥ 10", "correct": true, "feedback": "Correcto."},
+           {"text": "No: 400 es menos del 10 % de los clientes", "tag": "condiciones_ignoradas", "feedback": "Que la muestra sea pequeña frente a la población no es un problema: es lo que garantiza independencia."},
+           {"text": "Sí, porque n > 30", "tag": "condiciones_ignoradas", "feedback": "La conclusión es correcta, el criterio no: para proporciones se revisan éxitos y fracasos."}
+         ]},
+        {"type": "compute", "title": "Cálculo", "prompt": "La app construye el IC al 95 % para p.",
+         "note": "p̂ ± 1,96·√(p̂(1 − p̂)/n) con p̂ = 0,33 y n = 400."},
+        {"type": "choice", "title": "Decisión", "prompt": "IC 95 %: (0,284; 0,376). ¿Alcanza para asegurar que se supera el 30 %?",
+         "options": [
+           {"text": "No: el intervalo incluye valores menores que 30 %", "correct": true, "feedback": "Correcto: la viabilidad es plausible, pero no está asegurada."},
+           {"text": "Sí: 33 % es mayor que 30 %", "tag": "parametro_vs_estadistico", "feedback": "33 % es la estimación; el intervalo muestra que la proporción real podría ser 28 %."},
+           {"text": "Sí: hay 95 % de probabilidad de que p esté entre 28 % y 38 %, y la mayor parte está sobre 30 %", "tag": "ic_probabilidad_parametro", "feedback": "El intervalo no reparte probabilidades entre sus valores."}
+         ]},
+        {"type": "choice", "title": "Tamaño de muestra", "prompt": "Para un margen de ±3 puntos al 95 %, usando p ≈ 0,33, ¿cuántos clientes hay que encuestar?",
+         "options": [
+           {"text": "944", "correct": true, "feedback": "Correcto: 1,96² × 0,33 × 0,67 / 0,03² ≈ 943,6 → 944."},
+           {"text": "600", "tag": "precision_lineal_n", "feedback": "Pasar de ±4,6 a ±3 puntos exige más que multiplicar n por 1,5: el margen depende de √n."},
+           {"text": "Da igual: con 400 el margen ya es ±3", "tag": "de_vs_error_estandar", "feedback": "Con 400 el margen es ±4,6 puntos. 2,4 puntos es el error estándar, no el margen."}
+         ]}
+      ],
+      "debrief": "La estimación (33 %) supera el umbral, pero el IC 95 % va de 28,4 % a 37,6 %: la viabilidad no está asegurada. Las opciones profesionales son lanzar un piloto, aceptar el riesgo explícitamente o ampliar la muestra a unos 944 clientes para un margen de ±3 puntos. Un intervalo que cruza el umbral de decisión es, en sí mismo, una respuesta: «todavía no lo sabemos con la precisión que necesitamos»."
+    },
+    {
+      "id": "case_economia", "career": "Economía", "icon": "payments", "difficulty": 2, "modules": ["m3", "m4"],
+      "title": "¿Subió el gasto en transporte?",
+      "role": "Eres analista en el área de estudios económicos de un gobierno regional.",
+      "brief": "Hace dos años, el gasto mensual medio de los hogares en transporte era S/ 195. Este año se encuestó a 150 hogares elegidos al azar del padrón.",
+      "question": "¿Cuál es el gasto medio actual y hay evidencia de que cambió?",
+      "data": [
+        {"label": "Hogares (n)", "value": "150"},
+        {"label": "Gasto medio (x̄)", "value": "S/ 212"},
+        {"label": "Desviación estándar (s)", "value": "S/ 85"},
+        {"label": "Referencia anterior", "value": "S/ 195"}
+      ],
+      "analysis": {"fn": "test_mean_t", "alpha": 0.05, "args": {"mean": 212, "sd": 85, "n": 150, "mu0": 195, "tail": "two"},
+                   "companion": {"fn": "ci_mean_t", "args": {"mean": 212, "sd": 85, "n": 150, "conf": 0.95}}},
+      "expectedReject": true,
+      "verify": [
+        {"fn": "ci_mean_t", "args": {"mean": 212, "sd": 85, "n": 150, "conf": 0.95}, "field": "lower", "value": 198.3, "tol": 0.05},
+        {"fn": "ci_mean_t", "args": {"mean": 212, "sd": 85, "n": 150, "conf": 0.95}, "field": "upper", "value": 225.7, "tol": 0.05},
+        {"fn": "test_mean_t", "args": {"mean": 212, "sd": 85, "n": 150, "mu0": 195, "tail": "two"}, "field": "p", "value": 0.0155, "tol": 0.0005}
+      ],
+      "steps": [
+        {"type": "choice", "title": "Condiciones", "prompt": "Los gastos en transporte son asimétricos (algunos hogares gastan mucho). ¿Es un problema?",
+         "options": [
+           {"text": "No mucho: con n = 150, el TLC hace que x̄ sea aproximadamente normal", "correct": true, "feedback": "Correcto: la asimetría de los datos no impide la inferencia sobre la media con n grande."},
+           {"text": "Sí: los datos deberían ser normales", "tag": "tlc_datos_normales", "feedback": "El TLC no pide datos normales; pide n suficiente para que x̄ lo sea."},
+           {"text": "Sí: con asimetría la media no existe", "feedback": "La media existe; con asimetría fuerte conviene también reportar la mediana, pero la inferencia sobre μ es válida."}
+         ]},
+        {"type": "compute", "title": "Cálculo", "prompt": "La app construye el IC al 95 % y la prueba bilateral frente a S/ 195.",
+         "note": "EE = 85/√150 ≈ 6,94; t con 149 gl."},
+        {"type": "choice", "title": "Interpretación", "prompt": "IC 95 %: (S/ 198,3; S/ 225,7). ¿Qué dice?",
+         "options": [
+           {"text": "Con 95 % de confianza, el gasto medio de los hogares de la región está entre S/ 198 y S/ 226", "correct": true, "feedback": "Correcto."},
+           {"text": "El 95 % de los hogares gasta entre S/ 198 y S/ 226", "tag": "ic_contiene_datos", "feedback": "Con s = 85, los hogares individuales gastan desde muy poco hasta más de S/ 350: el IC es para la media."},
+           {"text": "El gasto medio de los 150 hogares está entre S/ 198 y S/ 226", "tag": "ic_sobre_estadistico", "feedback": "El de los 150 hogares se conoce: es S/ 212."}
+         ]},
+        {"type": "choice", "title": "Decisión", "prompt": "t ≈ 2,45, p ≈ 0,015. ¿Qué concluyes sobre el cambio?",
+         "options": [
+           {"text": "Hay evidencia de que el gasto medio cambió: S/ 195 queda fuera del IC", "correct": true, "feedback": "Correcto: prueba e intervalo coinciden."},
+           {"text": "El gasto subió exactamente S/ 17", "tag": "parametro_vs_estadistico", "feedback": "17 es la diferencia estimada; el aumento real está entre unos S/ 3 y S/ 31."},
+           {"text": "La inflación causó el aumento", "tag": "observacional_causal", "feedback": "Los datos muestran un cambio, no su causa: tarifas, distancias o hábitos también pudieron cambiar."}
+         ]}
+      ],
+      "debrief": "El gasto medio actual se estima entre S/ 198 y S/ 226 (95 %), y la referencia de S/ 195 queda fuera: hay evidencia de cambio (p ≈ 0,015). El aumento plausible va de unos S/ 3 a S/ 31 por hogar al mes, un rango amplio que conviene comunicar. Explicar por qué subió exige otro análisis: la prueba solo detecta el cambio."
+    },
+    {
+      "id": "case_contabilidad", "career": "Contabilidad", "icon": "receipt", "difficulty": 3, "modules": ["m4", "m5"],
+      "title": "Auditoría de facturas",
+      "role": "Eres auditor externo de una empresa distribuidora.",
+      "brief": "La firma considera tolerable una tasa de facturas con errores de hasta 5 %. Si hay evidencia de que la tasa la supera, se amplía la revisión y se informa una deficiencia. Se revisaron 200 facturas elegidas al azar entre las 18 000 del año.",
+      "question": "¿Hay evidencia, al 5 %, de que la tasa de error supera el 5 % tolerable?",
+      "data": [
+        {"label": "Facturas revisadas (n)", "value": "200"},
+        {"label": "Con errores", "value": "16 (8 %)"},
+        {"label": "Tasa tolerable", "value": "5 %"},
+        {"label": "Selección", "value": "Aleatoria simple del registro de ventas"}
+      ],
+      "analysis": {"fn": "test_prop", "alpha": 0.05, "args": {"x": 16, "n": 200, "p0": 0.05, "tail": "greater"}},
+      "expectedReject": true,
+      "verify": [
+        {"fn": "test_prop", "args": {"x": 16, "n": 200, "p0": 0.05, "tail": "greater"}, "field": "statistic", "value": 1.95, "tol": 0.005},
+        {"fn": "test_prop", "args": {"x": 16, "n": 200, "p0": 0.05, "tail": "greater"}, "field": "p", "value": 0.026, "tol": 0.0005}
+      ],
+      "steps": [
+        {"type": "choice", "title": "Hipótesis", "prompt": "¿Qué hipótesis planteas?",
+         "options": [
+           {"text": "H0: p ≤ 0,05   H1: p > 0,05", "correct": true, "feedback": "Correcto: ampliar la revisión requiere evidencia de una tasa superior a la tolerable."},
+           {"text": "H0: p̂ = 0,08   H1: p̂ > 0,05", "tag": "hipotesis_con_estadistico", "feedback": "Las hipótesis se plantean sobre la tasa de todas las facturas, p."},
+           {"text": "H0: p = 0,05   H1: p ≠ 0,05", "tag": "cola_mal_elegida", "feedback": "Una tasa menor que la tolerable no genera ninguna acción: la pregunta es unilateral."}
+         ]},
+        {"type": "choice", "title": "Condiciones", "prompt": "¿Se cumple la condición para la aproximación normal bajo H0?",
+         "options": [
+           {"text": "Justo: n·p0 = 200 × 0,05 = 10 éxitos esperados, en el límite", "correct": true, "feedback": "Correcto: se cumple por poco. Una prueba binomial exacta es una buena verificación."},
+           {"text": "No se puede saber sin conocer σ", "tag": "procedimiento_equivocado", "feedback": "Para proporciones no se usa σ: la condición es n·p0 ≥ 10 y n(1 − p0) ≥ 10."},
+           {"text": "Sí, porque 200 es mayor que 30", "tag": "condiciones_ignoradas", "feedback": "El criterio para proporciones es el número de éxitos y fracasos esperados."}
+         ]},
+        {"type": "compute", "title": "Cálculo", "prompt": "La app ejecuta la prueba z de una proporción.",
+         "note": "El error estándar usa p0 = 0,05 porque se calcula suponiendo H0 cierta."},
+        {"type": "choice", "title": "Decisión", "prompt": "z ≈ 1,95 y p ≈ 0,026. ¿Qué decides?",
+         "options": [
+           {"text": "Rechazar H0: hay evidencia de que la tasa de error supera el 5 % tolerable", "correct": true, "feedback": "Correcto: corresponde ampliar la revisión e informar."},
+           {"text": "No rechazar: 8 % está cerca de 5 %", "tag": "variabilidad_muestral_error", "feedback": "La diferencia equivale a casi 2 errores estándar: bajo H0 sería poco frecuente."},
+           {"text": "Rechazar H0: la tasa de error de la empresa es 8 %", "tag": "parametro_vs_estadistico", "feedback": "La decisión es correcta; la cifra no: 8 % es la tasa de la muestra."}
+         ]},
+        {"type": "choice", "title": "Riesgo de auditoría", "prompt": "En auditoría, ¿qué error es el más grave para el auditor y a qué tipo corresponde?",
+         "options": [
+           {"text": "Aceptar como razonables unos registros con errores materiales: error tipo II (riesgo de aceptación incorrecta)", "correct": true, "feedback": "Correcto: por eso los auditores se preocupan especialmente por la potencia de su muestra."},
+           {"text": "Ampliar la revisión cuando no hacía falta: error tipo II", "tag": "errores_tipo_confundidos", "feedback": "Ampliar sin necesidad es rechazar una H0 verdadera: tipo I (riesgo de rechazo incorrecto)."},
+           {"text": "Ninguno: la muestra aleatoria elimina los errores de decisión", "tag": "margen_incluye_sesgo", "feedback": "La aleatoriedad controla el sesgo, no elimina el riesgo de decisión."}
+         ]}
+      ],
+      "debrief": "Con 16 errores en 200 facturas, p ≈ 0,026: hay evidencia de que la tasa supera el 5 % tolerable y corresponde ampliar la revisión. En el lenguaje de auditoría, el riesgo de aceptación incorrecta (tipo II) suele considerarse más grave que el de rechazo incorrecto (tipo I), porque compromete la opinión del auditor; por eso el tamaño de muestra se diseña pensando en la potencia."
+    },
+    {
+      "id": "case_psicologia", "career": "Psicología", "icon": "psychology", "difficulty": 3, "modules": ["m5"],
+      "title": "Un programa contra la ansiedad",
+      "role": "Eres psicóloga investigadora en el servicio de bienestar universitario.",
+      "brief": "62 estudiantes voluntarios fueron asignados al azar a un programa de 6 semanas de manejo de ansiedad (32) o a lista de espera (30). Al final se aplicó una escala de ansiedad (mayor puntaje = más ansiedad).",
+      "question": "¿El programa reduce la ansiedad? ¿Cuánto?",
+      "data": [
+        {"label": "Programa (n = 32)", "value": "x̄ = 38,4; s = 9,1"},
+        {"label": "Lista de espera (n = 30)", "value": "x̄ = 43,9; s = 10,2"},
+        {"label": "Asignación", "value": "Aleatoria"},
+        {"label": "Prueba", "value": "Bilateral, α = 0,05"}
+      ],
+      "analysis": {"fn": "test_diff_means", "alpha": 0.05, "args": {"mean1": 38.4, "sd1": 9.1, "n1": 32, "mean2": 43.9, "sd2": 10.2, "n2": 30, "tail": "two"},
+                   "companion": {"fn": "ci_diff_means", "args": {"mean1": 38.4, "sd1": 9.1, "n1": 32, "mean2": 43.9, "sd2": 10.2, "n2": 30, "conf": 0.95}}},
+      "expectedReject": true,
+      "verify": [
+        {"fn": "test_diff_means", "args": {"mean1": 38.4, "sd1": 9.1, "n1": 32, "mean2": 43.9, "sd2": 10.2, "n2": 30, "tail": "two"}, "field": "statistic", "value": -2.23, "tol": 0.01},
+        {"fn": "test_diff_means", "args": {"mean1": 38.4, "sd1": 9.1, "n1": 32, "mean2": 43.9, "sd2": 10.2, "n2": 30, "tail": "two"}, "field": "p", "value": 0.029, "tol": 0.0005},
+        {"fn": "ci_diff_means", "args": {"mean1": 38.4, "sd1": 9.1, "n1": 32, "mean2": 43.9, "sd2": 10.2, "n2": 30, "conf": 0.95}, "field": "lower", "value": -10.4, "tol": 0.05},
+        {"fn": "ci_diff_means", "args": {"mean1": 38.4, "sd1": 9.1, "n1": 32, "mean2": 43.9, "sd2": 10.2, "n2": 30, "conf": 0.95}, "field": "upper", "value": -0.6, "tol": 0.05},
+        {"fn": "cohen_d", "args": {"mean1": 38.4, "sd1": 9.1, "n1": 32, "mean2": 43.9, "sd2": 10.2, "n2": 30}, "field": "d", "value": -0.57, "tol": 0.005}
+      ],
+      "steps": [
+        {"type": "choice", "title": "Procedimiento", "prompt": "¿Qué análisis corresponde?",
+         "options": [
+           {"text": "Diferencia de medias de dos grupos independientes (Welch)", "correct": true, "feedback": "Correcto: personas distintas en cada grupo, variable numérica."},
+           {"text": "Prueba t pareada", "tag": "procedimiento_equivocado", "feedback": "Pareada sería si las mismas personas se midieran antes y después."},
+           {"text": "Prueba de dos proporciones", "tag": "procedimiento_equivocado", "feedback": "El puntaje de ansiedad es numérico."}
+         ]},
+        {"type": "compute", "title": "Cálculo", "prompt": "La app calcula la prueba de Welch y el IC al 95 % para μ_programa − μ_espera.",
+         "note": "Los grados de libertad de Welch no son enteros (≈ 58)."},
+        {"type": "choice", "title": "Decisión", "prompt": "t ≈ −2,23; p ≈ 0,029; IC 95 %: (−10,4; −0,6). ¿Qué concluyes?",
+         "options": [
+           {"text": "El programa reduce la ansiedad media entre 0,6 y 10,4 puntos", "correct": true, "feedback": "Correcto: el IC excluye el 0 y cuantifica la reducción."},
+           {"text": "El programa reduce la ansiedad de cada participante", "tag": "ic_contiene_datos", "feedback": "El resultado es sobre las medias; algunos participantes pueden no mejorar."},
+           {"text": "Hay un 2,9 % de probabilidad de que el programa no funcione", "tag": "p_prob_h0", "feedback": "El p-valor no es la probabilidad de H0."}
+         ]},
+        {"type": "choice", "title": "Causalidad", "prompt": "¿Se puede afirmar que el programa causa la reducción?",
+         "options": [
+           {"text": "Sí, dentro de lo que el diseño permite: la asignación fue aleatoria", "correct": true, "feedback": "Correcto: el azar equilibra, en promedio, las demás variables entre grupos."},
+           {"text": "No: solo es una asociación", "tag": "no_rechazar_es_aceptar", "feedback": "Con asignación aleatoria sí se puede hablar de efecto causal del programa."},
+           {"text": "Sí, porque p < 0,05", "tag": "observacional_causal", "feedback": "La causalidad viene del diseño aleatorizado, no del p-valor."}
+         ]},
+        {"type": "choice", "title": "Generalización", "prompt": "¿A quién se puede extender el resultado?",
+         "options": [
+           {"text": "A estudiantes similares a los voluntarios de esta universidad", "correct": true, "feedback": "Correcto: los participantes fueron voluntarios, no una muestra aleatoria de todos los estudiantes."},
+           {"text": "A todos los universitarios del país", "tag": "poblacion_objetivo_mal_definida", "feedback": "Aleatorizar el tratamiento no convierte a los voluntarios en una muestra del país."},
+           {"text": "A cualquier persona con ansiedad", "tag": "poblacion_objetivo_mal_definida", "feedback": "La población estudiada son universitarios voluntarios de una institución."}
+         ]}
+      ],
+      "debrief": "El programa reduce la ansiedad media (p ≈ 0,029), con un efecto estimado de 5,5 puntos, IC 95 % de 0,6 a 10,4, y d ≈ 0,57: un efecto mediano. La aleatorización permite hablar de causa; el reclutamiento voluntario limita a quién se generaliza. El intervalo es ancho: una réplica con más participantes precisaría si el efecto es modesto o importante."
+    },
+    {
+      "id": "case_biologia", "career": "Biología", "icon": "eco", "difficulty": 2, "modules": ["m4"],
+      "title": "Semillas que no germinan",
+      "role": "Eres biólogo en un vivero que produce plantones para reforestación.",
+      "brief": "El proveedor garantiza una tasa de germinación de 85 %. Sembraste 120 semillas elegidas al azar del lote, en condiciones controladas y en bandejas distintas.",
+      "question": "¿Hay evidencia, al 5 %, de que la germinación es menor que la garantizada?",
+      "data": [
+        {"label": "Semillas sembradas (n)", "value": "120"},
+        {"label": "Germinaron", "value": "94 (78,3 %)"},
+        {"label": "Tasa garantizada", "value": "85 %"}
+      ],
+      "analysis": {"fn": "test_prop", "alpha": 0.05, "args": {"x": 94, "n": 120, "p0": 0.85, "tail": "less"}},
+      "expectedReject": true,
+      "verify": [
+        {"fn": "test_prop", "args": {"x": 94, "n": 120, "p0": 0.85, "tail": "less"}, "field": "statistic", "value": -2.05, "tol": 0.01},
+        {"fn": "test_prop", "args": {"x": 94, "n": 120, "p0": 0.85, "tail": "less"}, "field": "p", "value": 0.020, "tol": 0.001}
+      ],
+      "steps": [
+        {"type": "choice", "title": "Hipótesis", "prompt": "Quieres reclamar al proveedor. ¿Qué hipótesis planteas?",
+         "options": [
+           {"text": "H0: p = 0,85   H1: p < 0,85", "correct": true, "feedback": "Correcto: el reclamo necesita evidencia de una tasa menor."},
+           {"text": "H0: p = 0,85   H1: p > 0,85", "tag": "cola_mal_elegida", "feedback": "La sospecha es que germinan menos."},
+           {"text": "H0: p < 0,85   H1: p = 0,85", "tag": "cola_mal_elegida", "feedback": "La igualdad va en H0; lo que se quiere demostrar, en H1."}
+         ]},
+        {"type": "choice", "title": "Condiciones", "prompt": "¿Qué aspecto del diseño protege la independencia de las observaciones?",
+         "options": [
+           {"text": "Sembrar en bandejas distintas, para que un problema de una bandeja no afecte a muchas semillas a la vez", "correct": true, "feedback": "Correcto: semillas en una misma bandeja comparten humedad y temperatura."},
+           {"text": "Tener más de 30 semillas", "tag": "condiciones_ignoradas", "feedback": "El número ayuda a la aproximación normal, no a la independencia."},
+           {"text": "Que la germinación sea mayor que 50 %", "feedback": "Eso no tiene relación con la independencia."}
+         ]},
+        {"type": "compute", "title": "Cálculo", "prompt": "La app ejecuta la prueba z de una proporción, cola izquierda.",
+         "note": "n·p0 = 102 y n(1 − p0) = 18: ambos ≥ 10."},
+        {"type": "choice", "title": "Decisión", "prompt": "z ≈ −2,05, p ≈ 0,020. ¿Qué decides?",
+         "options": [
+           {"text": "Rechazar H0: hay evidencia de que la germinación es menor que 85 %", "correct": true, "feedback": "Correcto: hay base para el reclamo."},
+           {"text": "No rechazar: 78 % es parecido a 85 %", "tag": "variabilidad_muestral_error", "feedback": "La diferencia equivale a unos dos errores estándar: poco frecuente bajo H0."},
+           {"text": "Rechazar H0 porque p̂ < 0,85", "tag": "hipotesis_con_estadistico", "feedback": "No basta con que p̂ sea menor: debe serlo más de lo que el azar suele producir."}
+         ]},
+        {"type": "choice", "title": "Riesgo", "prompt": "¿Qué error podría estar cometiendo al reclamar?",
+         "options": [
+           {"text": "Tipo I: acusar al proveedor cuando el lote sí cumplía, con probabilidad α = 0,05", "correct": true, "feedback": "Correcto."},
+           {"text": "Tipo II: no reclamar un lote defectuoso", "tag": "errores_tipo_confundidos", "feedback": "Ese error solo existe cuando no se rechaza H0."},
+           {"text": "Ninguno: la prueba demostró que el lote es defectuoso", "tag": "p_prob_h0", "feedback": "Rechazar H0 no elimina el riesgo de un error tipo I."}
+         ]}
+      ],
+      "debrief": "Con 94 de 120 semillas germinadas, p ≈ 0,020: hay evidencia de que el lote no alcanza el 85 % garantizado. El reclamo se refuerza al mostrar que el diseño controló la independencia (bandejas distintas) y condiciones controladas. Si el proveedor pide más evidencia, una prueba binomial exacta o una segunda muestra de otra partida del lote son respuestas razonables."
+    },
+    {
+      "id": "case_humanidades", "career": "Humanidades", "icon": "book", "difficulty": 2, "modules": ["m1", "m3"],
+      "title": "¿Cuánto leen los universitarios?",
+      "role": "Eres parte del equipo de la biblioteca que prepara un informe para el rectorado.",
+      "brief": "La biblioteca publicó una encuesta en su cuenta de Instagram: «¿Lees al menos un libro al mes, fuera de tus cursos?». Respondieron 1 240 personas y el 71 % dijo que sí. El rectorado quiere citar la cifra en un discurso sobre hábitos de lectura de sus 20 000 estudiantes.",
+      "question": "¿Se puede afirmar que alrededor del 71 % de los estudiantes lee al menos un libro al mes?",
+      "data": [
+        {"label": "Respuestas", "value": "1 240"},
+        {"label": "Leen al menos un libro al mes", "value": "71 %"},
+        {"label": "Canal", "value": "Encuesta abierta en Instagram de la biblioteca"},
+        {"label": "Población de interés", "value": "20 000 estudiantes"}
+      ],
+      "steps": [
+        {"type": "choice", "title": "Tipo de muestra", "prompt": "¿Qué tipo de muestra es?",
+         "options": [
+           {"text": "De respuesta voluntaria, con cobertura limitada a seguidores de la biblioteca", "correct": true, "feedback": "Correcto: dos fuentes de sesgo que se refuerzan."},
+           {"text": "Aleatoria, porque cualquiera pudo responder", "tag": "conveniencia_representativa", "feedback": "Que cualquiera pueda responder no es azar: cada uno decide si participa."},
+           {"text": "Estratificada por facultades", "tag": "estratificado_vs_conglomerados", "feedback": "No hubo ninguna selección por estratos."}
+         ]},
+        {"type": "choice", "title": "Dirección del sesgo", "prompt": "¿Hacia dónde es probable que esté sesgado el 71 %?",
+         "options": [
+           {"text": "Hacia arriba: siguen a la biblioteca y responden sobre lectura quienes más leen", "correct": true, "feedback": "Correcto: la selección favorece a los lectores."},
+           {"text": "No hay sesgo: con 1 240 respuestas se compensa", "tag": "muestra_grande_corrige_sesgo", "feedback": "El tamaño no compensa un método que selecciona a los lectores."},
+           {"text": "Hacia abajo, porque los estudiantes no usan Instagram", "feedback": "No hay razón para suponerlo; la selección favorece claramente a los interesados en la lectura."}
+         ]},
+        {"type": "choice", "title": "Margen de error", "prompt": "Un colega calcula un margen de ±2,5 puntos con n = 1 240. ¿Qué opinas?",
+         "options": [
+           {"text": "El cálculo no tiene sentido: el margen supone muestreo aleatorio", "correct": true, "feedback": "Correcto: sin azar en la selección, la cifra de ±2,5 da una precisión falsa."},
+           {"text": "Es correcto: el 71 % está entre 68,5 % y 73,5 %", "tag": "margen_incluye_sesgo", "feedback": "El margen no cubre el sesgo de selección, que aquí es el error principal."},
+           {"text": "Habría que calcularlo con p = 0,5", "tag": "condiciones_ignoradas", "feedback": "El problema no es el valor de p usado: es que la muestra no es aleatoria."}
+         ]},
+        {"type": "choice", "title": "Recomendación", "prompt": "¿Qué recomiendas al rectorado?",
+         "options": [
+           {"text": "No citar la cifra como dato de los estudiantes; hacer una encuesta con muestra aleatoria del registro de matrícula", "correct": true, "feedback": "Correcto: con unos 400 estudiantes al azar, el margen sería de ±5 puntos y el resultado, defendible."},
+           {"text": "Citarla aclarando que el margen es ±2,5 puntos", "tag": "margen_incluye_sesgo", "feedback": "Añadir un margen a un dato sesgado lo hace parecer más fiable de lo que es."},
+           {"text": "Citarla como «el 71 % de los estudiantes»", "tag": "poblacion_objetivo_mal_definida", "feedback": "El 71 % describe a quienes respondieron, no a los 20 000 estudiantes."}
+         ]}
+      ],
+      "debrief": "Aquí la decisión correcta es no hacer inferencia. La encuesta describe a 1 240 personas que siguen a la biblioteca y quisieron responder, un grupo previsiblemente más lector que el promedio. Ningún margen de error corrige ese sesgo. Una muestra aleatoria de unos 400 estudiantes del registro de matrícula daría una estimación con ±5 puntos de margen y, sobre todo, defendible."
+    },
+    {
+      "id": "case_desarrollo", "career": "Desarrollo personal", "icon": "bedtime", "difficulty": 2, "modules": ["m5"],
+      "title": "Dormir y aprobar",
+      "role": "Eres parte de un equipo de tutoría que prepara una campaña sobre hábitos saludables.",
+      "brief": "En una encuesta aleatoria a 195 estudiantes se registraron horas de sueño y promedio ponderado (escala 0–20). Quienes duermen 7 horas o más tienen mejor promedio. El equipo quiere lanzar la campaña «Duerme 7 horas y sube tu promedio».",
+      "question": "¿Es significativa la diferencia? ¿Justifica el mensaje de la campaña?",
+      "data": [
+        {"label": "Duermen ≥ 7 h (n = 85)", "value": "Promedio 14,6; s = 1,8"},
+        {"label": "Duermen < 7 h (n = 110)", "value": "Promedio 13,9; s = 2,1"},
+        {"label": "Diseño", "value": "Encuesta aleatoria (observacional)"}
+      ],
+      "analysis": {"fn": "test_diff_means", "alpha": 0.05, "args": {"mean1": 14.6, "sd1": 1.8, "n1": 85, "mean2": 13.9, "sd2": 2.1, "n2": 110, "tail": "two"},
+                   "companion": {"fn": "ci_diff_means", "args": {"mean1": 14.6, "sd1": 1.8, "n1": 85, "mean2": 13.9, "sd2": 2.1, "n2": 110, "conf": 0.95}}},
+      "expectedReject": true,
+      "verify": [
+        {"fn": "test_diff_means", "args": {"mean1": 14.6, "sd1": 1.8, "n1": 85, "mean2": 13.9, "sd2": 2.1, "n2": 110, "tail": "two"}, "field": "statistic", "value": 2.50, "tol": 0.005},
+        {"fn": "test_diff_means", "args": {"mean1": 14.6, "sd1": 1.8, "n1": 85, "mean2": 13.9, "sd2": 2.1, "n2": 110, "tail": "two"}, "field": "p", "value": 0.013, "tol": 0.0005},
+        {"fn": "ci_diff_means", "args": {"mean1": 14.6, "sd1": 1.8, "n1": 85, "mean2": 13.9, "sd2": 2.1, "n2": 110, "conf": 0.95}, "field": "lower", "value": 0.15, "tol": 0.005},
+        {"fn": "ci_diff_means", "args": {"mean1": 14.6, "sd1": 1.8, "n1": 85, "mean2": 13.9, "sd2": 2.1, "n2": 110, "conf": 0.95}, "field": "upper", "value": 1.25, "tol": 0.005}
+      ],
+      "steps": [
+        {"type": "choice", "title": "Diseño", "prompt": "¿Qué tipo de estudio es?",
+         "options": [
+           {"text": "Observacional: cada estudiante duerme lo que decide o puede", "correct": true, "feedback": "Correcto: nadie asignó las horas de sueño."},
+           {"text": "Un experimento, porque la muestra fue aleatoria", "tag": "observacional_causal", "feedback": "El azar en la selección permite generalizar; el azar en la asignación permitiría hablar de causa. Aquí solo hubo el primero."},
+           {"text": "Un estudio pareado", "tag": "procedimiento_equivocado", "feedback": "Son dos grupos de estudiantes distintos."}
+         ]},
+        {"type": "compute", "title": "Cálculo", "prompt": "La app calcula la prueba de Welch y el IC para la diferencia de promedios.",
+         "note": "Diferencia: ≥ 7 h menos < 7 h."},
+        {"type": "choice", "title": "Decisión", "prompt": "t ≈ 2,50; p ≈ 0,013; IC 95 %: (0,15; 1,25) puntos. ¿Qué concluyes?",
+         "options": [
+           {"text": "En la población, quienes duermen ≥ 7 h tienen un promedio mayor, en 0,15 a 1,25 puntos", "correct": true, "feedback": "Correcto: la diferencia es significativa y el IC la cuantifica."},
+           {"text": "Dormir 7 horas sube el promedio entre 0,15 y 1,25 puntos", "tag": "observacional_causal", "feedback": "Eso afirma causalidad. El estudio solo muestra una diferencia entre grupos."},
+           {"text": "La diferencia es enorme porque p = 0,013", "tag": "significativo_importante", "feedback": "El p-valor no mide el tamaño: la diferencia es de 0,15 a 1,25 puntos sobre 20."}
+         ]},
+        {"type": "choice", "title": "Explicaciones alternativas", "prompt": "¿Qué variable podría explicar la diferencia sin que el sueño la cause?",
+         "options": [
+           {"text": "Trabajar además de estudiar: reduce el sueño y el tiempo de estudio a la vez", "correct": true, "feedback": "Correcto: es una variable de confusión plausible."},
+           {"text": "El tamaño de muestra", "feedback": "n afecta la precisión, no explica la diferencia."},
+           {"text": "Ninguna: la muestra aleatoria elimina las variables de confusión", "tag": "observacional_causal", "feedback": "La muestra aleatoria no equilibra variables entre grupos que se formaron solos."}
+         ]},
+        {"type": "choice", "title": "Mensaje", "prompt": "¿Qué mensaje es honesto para la campaña?",
+         "options": [
+           {"text": "«Los estudiantes que duermen 7 horas o más tienen, en promedio, mejores notas. Dormir bien es parte de estudiar bien.»", "correct": true, "feedback": "Correcto: describe la asociación sin prometer un efecto causal."},
+           {"text": "«Duerme 7 horas y sube tu promedio»", "tag": "observacional_causal", "feedback": "Promete un efecto causal que el estudio no puede respaldar."},
+           {"text": "«No hay relación entre el sueño y las notas»", "tag": "no_rechazar_es_aceptar", "feedback": "Se rechazó H0: sí hay evidencia de una diferencia."}
+         ]}
+      ],
+      "debrief": "La diferencia es real en la población estudiada (p ≈ 0,013), pero modesta —0,15 a 1,25 puntos— y observacional: trabajo, carga académica o salud pueden explicar a la vez menos sueño y peores notas. Para afirmar que dormir más sube el promedio haría falta un estudio con asignación aleatoria de una intervención de sueño. El mensaje de campaña debe describir la asociación, no prometer un efecto."
+    }
+  ]
+}

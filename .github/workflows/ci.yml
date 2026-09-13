@@ -1,0 +1,52 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop]
+  pull_request:
+  workflow_dispatch:
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  content:
+    name: Contenido, cifras y verificación estática
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Integridad del contenido y cifras verificadas
+        run: python3 tool/validate_content.py
+      - name: Verificación estática ligera del código Dart
+        run: python3 tool/static_check.py
+
+  flutter:
+    name: Análisis y pruebas Flutter
+    needs: content
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - run: flutter --version
+      - name: Generar las plataformas nativas
+        run: |
+          flutter create --platforms=android,ios --project-name inferencia_estadistica --org com.inferenciaestadistica .
+          bash tool/postcreate.sh
+      - run: flutter pub get
+      - name: Icono del lanzador
+        run: dart run flutter_launcher_icons
+      - name: Formato (informativo)
+        run: dart format --output=none --set-exit-if-changed lib test
+        continue-on-error: true
+      - name: Análisis estático
+        run: flutter analyze --no-fatal-infos
+      - name: Pruebas
+        run: flutter test --reporter expanded

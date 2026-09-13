@@ -1,0 +1,1997 @@
+{
+ "exercises": [
+  {
+   "id": "ex_m1_01",
+   "module": "m1",
+   "type": "classify",
+   "difficulty": 1,
+   "lessonRef": "m1_l1",
+   "prompt": "Clasifica cada número como parámetro (describe a la población) o estadístico (se calcula con una muestra).",
+   "categories": [
+    "Parámetro",
+    "Estadístico"
+   ],
+   "items": [
+    {
+     "text": "La proporción de todos los vecinos del distrito que apoya la obra",
+     "category": 0,
+     "tag": "parametro_vs_estadistico",
+     "feedback": "Habla de todos los vecinos: es un parámetro, p. Probablemente nadie lo conoce."
+    },
+    {
+     "text": "El 38 % de los 500 vecinos encuestados",
+     "category": 1,
+     "tag": "parametro_vs_estadistico",
+     "feedback": "Sale de los 500 encuestados: es un estadístico, p̂ = 0,38."
+    },
+    {
+     "text": "La ley media de todo el mineral del tajo",
+     "category": 0,
+     "tag": "parametro_vs_estadistico",
+     "feedback": "Todo el mineral es la población: μ."
+    },
+    {
+     "text": "La ley media de 18 sondajes: 0,86 % Cu",
+     "category": 1,
+     "tag": "parametro_vs_estadistico",
+     "feedback": "Se calculó con 18 sondajes: es x̄."
+    },
+    {
+     "text": "La desviación estándar de las 200 facturas revisadas",
+     "category": 1,
+     "tag": "parametro_vs_estadistico",
+     "feedback": "Calculada con las 200 revisadas: es s."
+    },
+    {
+     "text": "El tiempo medio de respuesta de todas las solicitudes al servidor en el año",
+     "category": 0,
+     "tag": "parametro_vs_estadistico",
+     "feedback": "Todas las solicitudes del año: es μ."
+    }
+   ],
+   "explanation": "Pregunta clave: ¿el número describe a todos (parámetro) o solo a los que observaste (estadístico)? Los parámetros se estiman; los estadísticos se calculan."
+  },
+  {
+   "id": "ex_m1_02",
+   "module": "m1",
+   "type": "choice",
+   "difficulty": 1,
+   "lessonRef": "m1_l2",
+   "prompt": "Para evaluar un curso masivo, se sortean 6 de sus 40 secciones y se encuesta a todos los alumnos de esas 6 secciones. ¿Qué diseño es?",
+   "options": [
+    {
+     "text": "Muestreo por conglomerados",
+     "correct": true,
+     "feedback": "Correcto: se sortean grupos completos (secciones) y se observa a todos sus miembros."
+    },
+    {
+     "text": "Muestreo estratificado",
+     "tag": "estratificado_vs_conglomerados",
+     "feedback": "En el estratificado se sortea dentro de cada grupo y todos los grupos aportan casos. Aquí 34 secciones no aportan a nadie."
+    },
+    {
+     "text": "Muestreo aleatorio simple",
+     "feedback": "En el aleatorio simple cada alumno se sortea individualmente; aquí se sortean secciones."
+    },
+    {
+     "text": "Muestreo sistemático",
+     "feedback": "No hay un «uno de cada k» en un listado: se sortean secciones completas."
+    }
+   ],
+   "explanation": "Conglomerados: sortear grupos y observar a todos dentro. Estratos: observar en todos los grupos, sorteando dentro de cada uno."
+  },
+  {
+   "id": "ex_m1_03",
+   "module": "m1",
+   "type": "decision",
+   "difficulty": 2,
+   "lessonRef": "m1_l3",
+   "context": "La biblioteca quiere saber qué tan satisfechos están los 12 000 estudiantes de la universidad con sus servicios. Durante una semana encuesta a 350 personas en la puerta de la biblioteca: el 81 % se declara satisfecho.",
+   "prompt": "¿Se puede concluir que alrededor del 81 % de los estudiantes de la universidad está satisfecho?",
+   "options": [
+    {
+     "text": "Sí, 350 encuestas son suficientes para una población de 12 000",
+     "tag": "muestra_grande_corrige_sesgo",
+     "feedback": "El problema no es cuántos, sino quiénes: el tamaño no corrige la forma de selección."
+    },
+    {
+     "text": "No, el resultado describe a quienes usan la biblioteca",
+     "correct": true,
+     "feedback": "Correcto: el estudio no puede decir nada fiable sobre quienes no la usan."
+    },
+    {
+     "text": "Sí, pero con un margen de error de ±4 puntos",
+     "tag": "margen_incluye_sesgo",
+     "feedback": "El margen de error supone muestreo aleatorio; aquí el error principal es de cobertura y el margen no lo mide."
+    }
+   ],
+   "justificationPrompt": "¿Por qué?",
+   "justifications": [
+    {
+     "text": "Quien no visita la biblioteca nunca pudo entrar en la muestra: hay sesgo de cobertura",
+     "correct": true,
+     "feedback": "Exacto: los insatisfechos que dejaron de ir están excluidos por diseño."
+    },
+    {
+     "text": "Porque 350 es menos del 5 % de la población",
+     "tag": "muestra_pequena_representativa",
+     "feedback": "El porcentaje de la población muestreado casi no importa; con selección aleatoria, 350 bastaría."
+    },
+    {
+     "text": "Porque las encuestas presenciales siempre son poco sinceras",
+     "feedback": "Puede haber sesgo de respuesta, pero el problema central es quién pudo ser encuestado."
+    }
+   ],
+   "explanation": "Una muestra de conveniencia describe solo a quienes estaban a mano. Para generalizar a los 12 000, habría que sortear del registro de matrícula.",
+   "verify": [
+    {
+     "fn": "ci_prop",
+     "args": {
+      "x": 284,
+      "n": 350,
+      "conf": 0.95
+     },
+     "field": "margin",
+     "value": 0.041,
+     "tol": 0.001
+    }
+   ]
+  },
+  {
+   "id": "ex_m1_04",
+   "module": "m1",
+   "type": "choice",
+   "difficulty": 2,
+   "lessonRef": "m1_l1",
+   "context": "Se eligió al azar a 300 estudiantes de las facultades de Ingeniería y el 64 % dijo trabajar además de estudiar.",
+   "prompt": "¿Cuál es la conclusión válida?",
+   "options": [
+    {
+     "text": "Alrededor del 64 % de los estudiantes de Ingeniería trabaja",
+     "correct": true,
+     "feedback": "Correcto: la conclusión se limita a la población de la que se sorteó la muestra."
+    },
+    {
+     "text": "Alrededor del 64 % de los estudiantes de la universidad trabaja",
+     "tag": "poblacion_objetivo_mal_definida",
+     "feedback": "La muestra solo representa a Ingeniería. Otras facultades pueden tener horarios y perfiles distintos."
+    },
+    {
+     "text": "Exactamente el 64 % de los estudiantes de Ingeniería trabaja",
+     "tag": "parametro_vs_estadistico",
+     "feedback": "0,64 es p̂. La proporción real de Ingeniería se estima con un margen de error."
+    }
+   ],
+   "explanation": "La inferencia vale para la población muestreada. Extenderla a otra población es una suposición que hay que declarar y, en lo posible, evitar."
+  },
+  {
+   "id": "ex_m1_05",
+   "module": "m1",
+   "type": "choice",
+   "difficulty": 2,
+   "lessonRef": "m1_l3",
+   "context": "El porcentaje real de hogares con internet en una provincia es 42 %. Dos métodos se aplican cinco veces cada uno. Método A: 41, 44, 39, 46, 40. Método B: 55, 56, 55, 54, 56.",
+   "prompt": "¿Qué describe mejor a los métodos?",
+   "options": [
+    {
+     "text": "A tiene más variabilidad pero sin sesgo; B es preciso pero sesgado",
+     "correct": true,
+     "feedback": "Correcto: A se centra en 42; B se agrupa alrededor de 55."
+    },
+    {
+     "text": "A es peor porque sus resultados cambian más",
+     "tag": "variabilidad_muestral_error",
+     "feedback": "Variar no es equivocarse: A se reparte alrededor del valor real. B se equivoca siempre en la misma dirección."
+    },
+    {
+     "text": "B es mejor porque sus resultados son consistentes",
+     "tag": "muestra_grande_corrige_sesgo",
+     "feedback": "Consistente no es correcto: B repite con precisión una respuesta 13 puntos por encima."
+    }
+   ],
+   "explanation": "La variabilidad se reduce con más muestra; el sesgo no. Un método sesgado y preciso es el más peligroso, porque inspira confianza."
+  },
+  {
+   "id": "ex_m1_06",
+   "module": "m1",
+   "type": "choice",
+   "difficulty": 1,
+   "lessonRef": "m1_l4",
+   "context": "Un emprendedor encuesta al azar a 10 clientes y 8 se declaran satisfechos.",
+   "prompt": "¿Puede afirmar que al menos el 70 % de todos sus clientes está satisfecho?",
+   "options": [
+    {
+     "text": "Sí: 8 de 10 es 80 %, por encima de 70 %",
+     "tag": "muestra_pequena_representativa",
+     "feedback": "Con n = 10, obtener 8 satisfechos es bastante probable aunque en realidad solo lo esté el 60 % o incluso menos."
+    },
+    {
+     "text": "No: con n = 10 el resultado es compatible con proporciones mucho menores",
+     "correct": true,
+     "feedback": "Correcto: con 10 casos la variabilidad muestral es enorme."
+    },
+    {
+     "text": "No: la encuesta no fue aleatoria",
+     "feedback": "El enunciado dice que sí lo fue. El problema es el tamaño."
+    }
+   ],
+   "explanation": "Con muestras pequeñas las proporciones saltan mucho: el error estándar de p̂ con p = 0,7 y n = 10 es cerca de 0,14, es decir, 14 puntos."
+  },
+  {
+   "id": "ex_m1_07",
+   "module": "m1",
+   "type": "decision",
+   "difficulty": 2,
+   "lessonRef": "m1_l3",
+   "context": "Un diario publica una encuesta en su web: «¿Apoya la construcción del nuevo estadio?». Votan 5 000 personas y el 70 % dice que sí.",
+   "prompt": "¿Qué se puede decir sobre el apoyo de la población de la ciudad?",
+   "options": [
+    {
+     "text": "Que el apoyo está entre 68,7 % y 71,3 % (margen ±1,3)",
+     "tag": "margen_incluye_sesgo",
+     "feedback": "Esa cuenta supone una muestra aleatoria. Con respuesta voluntaria el margen no significa nada."
+    },
+    {
+     "text": "Nada fiable: la muestra no permite generalizar",
+     "correct": true,
+     "feedback": "Correcto: solo describe a quienes decidieron votar."
+    },
+    {
+     "text": "Que el apoyo es 70 % con un margen algo mayor por ser en línea",
+     "tag": "conveniencia_representativa",
+     "feedback": "No hay un «margen algo mayor» que corrija el sesgo: no se sabe ni su tamaño ni su dirección."
+    }
+   ],
+   "justificationPrompt": "¿Cuál es la razón principal?",
+   "justifications": [
+    {
+     "text": "Respuesta voluntaria: votan los más interesados y solo los lectores del diario",
+     "correct": true,
+     "feedback": "Exacto: dos sesgos, de autoselección y de cobertura."
+    },
+    {
+     "text": "5 000 es menos del 1 % de la ciudad",
+     "tag": "muestra_grande_corrige_sesgo",
+     "feedback": "El tamaño no es el problema; 5 000 respuestas aleatorias serían excelentes."
+    },
+    {
+     "text": "La pregunta tiene solo dos opciones",
+     "feedback": "Una pregunta binaria es perfectamente válida."
+    }
+   ],
+   "explanation": "Sin selección aleatoria no hay margen de error que valga. El número de votos solo hace más convincente un resultado que no representa a la ciudad.",
+   "verify": [
+    {
+     "fn": "ci_prop",
+     "args": {
+      "x": 3500,
+      "n": 5000,
+      "conf": 0.95
+     },
+     "field": "margin",
+     "value": 0.013,
+     "tol": 0.0005
+    }
+   ]
+  },
+  {
+   "id": "ex_m1_08",
+   "module": "m1",
+   "type": "classify",
+   "difficulty": 1,
+   "lessonRef": "m1_l2",
+   "prompt": "¿Cuáles de estas muestras son probabilísticas (permiten medir el error por azar)?",
+   "categories": [
+    "Probabilística",
+    "No probabilística"
+   ],
+   "items": [
+    {
+     "text": "Sorteo de 200 estudiantes del registro de matrícula",
+     "category": 0
+    },
+    {
+     "text": "Estudiantes que responden una encuesta en Instagram",
+     "category": 1,
+     "tag": "conveniencia_representativa",
+     "feedback": "Autoselección: responde quien quiere y solo quien sigue la cuenta."
+    },
+    {
+     "text": "Uno de cada 10 en la lista de matrícula, desde un inicio al azar",
+     "category": 0,
+     "feedback": "Es sistemático: el inicio aleatorio lo hace probabilístico."
+    },
+    {
+     "text": "Los estudiantes que pasan por la cafetería a mediodía",
+     "category": 1,
+     "tag": "conveniencia_representativa",
+     "feedback": "Conveniencia: excluye a quien no usa la cafetería o no está a esa hora."
+    },
+    {
+     "text": "Se sortean 5 aulas y se encuesta a todos sus alumnos",
+     "category": 0,
+     "tag": "estratificado_vs_conglomerados",
+     "feedback": "Es por conglomerados: el sorteo de aulas lo hace probabilístico."
+    },
+    {
+     "text": "Voluntarios que contestan un correo masivo",
+     "category": 1,
+     "tag": "conveniencia_representativa",
+     "feedback": "Respuesta voluntaria, aunque el correo llegue a todos."
+    }
+   ],
+   "explanation": "Probabilística = interviene un sorteo que asigna a cada individuo una probabilidad conocida de ser elegido."
+  },
+  {
+   "id": "ex_m1_09",
+   "module": "m1",
+   "type": "choice",
+   "difficulty": 1,
+   "lessonRef": "m1_l4",
+   "context": "Dos practicantes toman cada uno una muestra aleatoria de 30 piezas del mismo lote. Diámetros medios: 12,04 mm y 11,97 mm. El jefe concluye que uno de los dos midió mal.",
+   "prompt": "¿Qué le respondes?",
+   "options": [
+    {
+     "text": "Tiene razón: si el lote es el mismo, las medias deberían coincidir",
+     "tag": "variabilidad_muestral_error",
+     "feedback": "Dos muestras aleatorias del mismo lote casi nunca coinciden: contienen piezas distintas."
+    },
+    {
+     "text": "La diferencia puede ser simple variabilidad muestral",
+     "correct": true,
+     "feedback": "Correcto: antes de hablar de error hay que comparar la diferencia con el error estándar."
+    },
+    {
+     "text": "El lote cambió entre las dos mediciones",
+     "feedback": "Es posible, pero no hace falta suponerlo: la variabilidad muestral ya explica una diferencia pequeña."
+    }
+   ],
+   "explanation": "Muestras diferentes → estimaciones diferentes. La pregunta profesional es si la diferencia es mayor de lo que el azar suele producir."
+  },
+  {
+   "id": "ex_m1_10",
+   "module": "m1",
+   "type": "choice",
+   "difficulty": 2,
+   "lessonRef": "m1_l2",
+   "context": "Quieres estimar el gasto mensual en alimentos de los hogares de una ciudad con zonas de ingresos muy diferentes. Presupuesto: 400 hogares.",
+   "prompt": "¿Qué diseño dará la estimación más precisa?",
+   "options": [
+    {
+     "text": "Estratificado por zona socioeconómica, sorteando hogares en cada una",
+     "correct": true,
+     "feedback": "Correcto: los estratos difieren mucho entre sí, y fijar su peso elimina esa fuente de variación."
+    },
+    {
+     "text": "Sortear 4 zonas y encuestar 100 hogares en cada una",
+     "tag": "estratificado_vs_conglomerados",
+     "feedback": "Eso es por conglomerados: si salen 4 zonas parecidas, la estimación puede quedar muy lejos."
+    },
+    {
+     "text": "Encuestar a 400 personas en los principales mercados",
+     "tag": "conveniencia_representativa",
+     "feedback": "Conveniencia: excluye a quien compra en otros lugares y no permite medir el error."
+    }
+   ],
+   "explanation": "Estratificar conviene cuando los grupos son distintos entre sí y homogéneos por dentro. Así cada estrato aporta su parte justa."
+  },
+  {
+   "id": "ex_m2_01",
+   "module": "m2",
+   "type": "numeric",
+   "difficulty": 1,
+   "lessonRef": "m2_l2",
+   "context": "El puntaje de un test de aptitud tiene σ = 15 en la población.",
+   "prompt": "¿Cuál es el error estándar de la media en muestras aleatorias de n = 25?",
+   "answer": 3,
+   "tol": 0.01,
+   "decimals": 2,
+   "unit": "puntos",
+   "hint": "El error estándar divide σ entre la raíz de n.",
+   "traps": [
+    {
+     "value": 15,
+     "tol": 0.01,
+     "tag": "de_vs_error_estandar",
+     "feedback": "15 es σ, la dispersión de los individuos. Las medias varían menos: divide entre √n."
+    },
+    {
+     "value": 0.6,
+     "tol": 0.01,
+     "tag": "de_vs_error_estandar",
+     "feedback": "Dividiste entre n. El error estándar divide entre √n = 5."
+    }
+   ],
+   "verify": [
+    {
+     "fn": "se_mean",
+     "args": {
+      "sd": 15,
+      "n": 25
+     },
+     "field": "se",
+     "value": 3,
+     "tol": 0.0001
+    }
+   ],
+   "explanation": "EE = σ/√n = 15/√25 = 15/5 = 3. Las medias de 25 personas se dispersan cinco veces menos que los individuos."
+  },
+  {
+   "id": "ex_m2_02",
+   "module": "m2",
+   "type": "choice",
+   "difficulty": 1,
+   "lessonRef": "m2_l2",
+   "prompt": "Una encuestadora pasa de n = 400 a n = 1 600 casos. ¿Qué ocurre con el error estándar de su estimación?",
+   "options": [
+    {
+     "text": "Se reduce a la mitad",
+     "correct": true,
+     "feedback": "Correcto: n se multiplica por 4 y √4 = 2."
+    },
+    {
+     "text": "Se reduce a la cuarta parte",
+     "tag": "precision_lineal_n",
+     "feedback": "El error estándar depende de √n, no de n."
+    },
+    {
+     "text": "No cambia, porque la población es la misma",
+     "tag": "de_vs_error_estandar",
+     "feedback": "Lo que no cambia es σ. El error estándar sí baja con n."
+    }
+   ],
+   "explanation": "EE ∝ 1/√n. Cuadruplicar el costo de la encuesta duplica la precisión."
+  },
+  {
+   "id": "ex_m2_03",
+   "module": "m2",
+   "type": "choice",
+   "difficulty": 2,
+   "lessonRef": "m2_l3",
+   "context": "Los ingresos mensuales de los trabajadores de una región tienen una distribución muy asimétrica a la derecha.",
+   "prompt": "Recolectas UNA muestra aleatoria de 500 trabajadores. ¿Qué forma tendrá el histograma de esos 500 ingresos?",
+   "options": [
+    {
+     "text": "Aproximadamente normal, por el Teorema del Límite Central",
+     "tag": "tlc_datos_normales",
+     "feedback": "El TLC habla de la distribución de las medias de muchas muestras, no de los datos de una."
+    },
+    {
+     "text": "Asimétrica a la derecha, parecida a la población",
+     "correct": true,
+     "feedback": "Correcto: una muestra grande es una buena copia de la población."
+    },
+    {
+     "text": "Simétrica, porque n es mayor que 30",
+     "tag": "muestra_vs_distribucion_muestral",
+     "feedback": "La regla n ≥ 30 se refiere a la distribución muestral de x̄, no al histograma de una muestra."
+    }
+   ],
+   "explanation": "Los datos de una muestra reflejan la población. Lo que se vuelve normal con n grande es la distribución de x̄ en muchas muestras."
+  },
+  {
+   "id": "ex_m2_04",
+   "module": "m2",
+   "type": "numeric",
+   "difficulty": 2,
+   "lessonRef": "m2_l4",
+   "context": "Una máquina llena paquetes de arroz con μ = 500 g y σ = 12 g. Un inspector pesa 16 paquetes al azar.",
+   "prompt": "¿Cuál es la probabilidad de que el peso medio de los 16 paquetes sea menor que 495 g? (tres decimales)",
+   "answer": 0.048,
+   "tol": 0.002,
+   "decimals": 3,
+   "hint": "Primero calcula el error estándar; luego estandariza 495.",
+   "traps": [
+    {
+     "value": 0.338,
+     "tol": 0.004,
+     "tag": "de_vs_error_estandar",
+     "feedback": "Esa es la probabilidad para UN paquete (usaste σ = 12). Para la media de 16, el denominador es 12/√16 = 3."
+    },
+    {
+     "value": 0.952,
+     "tol": 0.003,
+     "feedback": "Calculaste P(x̄ > 495). Se pide la cola izquierda."
+    }
+   ],
+   "verify": [
+    {
+     "fn": "prob_mean_between",
+     "args": {
+      "mu": 500,
+      "sigma": 12,
+      "n": 16,
+      "a": 0,
+      "b": 495
+     },
+     "field": "p",
+     "value": 0.0478,
+     "tol": 0.0005
+    }
+   ],
+   "explanation": "EE = 12/√16 = 3. Z = (495 − 500)/3 ≈ −1,67. P(Z < −1,67) ≈ 0,048. Un paquete de 495 g es común; una media de 495 g en 16 paquetes es rara y sugiere revisar la máquina."
+  },
+  {
+   "id": "ex_m2_05",
+   "module": "m2",
+   "type": "decision",
+   "difficulty": 2,
+   "lessonRef": "m2_l4",
+   "context": "En una línea de ensamblaje, el 5 % de las placas sale con defectos. Se inspeccionan 80 placas al azar.",
+   "prompt": "¿Es razonable aproximar la distribución de p̂ con una normal?",
+   "options": [
+    {
+     "text": "Sí, porque n = 80 es mayor que 30",
+     "tag": "condiciones_ignoradas",
+     "feedback": "La regla n ≥ 30 es para medias. Para proporciones importa el número esperado de éxitos y fracasos."
+    },
+    {
+     "text": "No",
+     "correct": true,
+     "feedback": "Correcto: solo se esperan 4 placas defectuosas."
+    }
+   ],
+   "justificationPrompt": "¿Por qué?",
+   "justifications": [
+    {
+     "text": "np = 80 × 0,05 = 4, menor que 10",
+     "correct": true,
+     "feedback": "Exacto: con tan pocos éxitos esperados, p̂ es muy asimétrica."
+    },
+    {
+     "text": "Porque la normal no se puede usar con proporciones",
+     "feedback": "Sí se puede, siempre que np ≥ 10 y n(1−p) ≥ 10."
+    },
+    {
+     "text": "Porque n debería ser al menos 100 siempre",
+     "tag": "condiciones_ignoradas",
+     "feedback": "No existe esa regla fija: con p = 0,5, n = 20 ya cumple; con p = 0,05 harían falta 200."
+    }
+   ],
+   "explanation": "Condición: np ≥ 10 y n(1 − p) ≥ 10. Aquí np = 4. Con proporciones pequeñas se necesitan muestras grandes o métodos exactos (binomial)."
+  },
+  {
+   "id": "ex_m2_06",
+   "module": "m2",
+   "type": "choice",
+   "difficulty": 1,
+   "lessonRef": "m2_l1",
+   "prompt": "¿Qué es la distribución muestral de la media?",
+   "options": [
+    {
+     "text": "El histograma de los datos de mi muestra",
+     "tag": "muestra_vs_distribucion_muestral",
+     "feedback": "Eso es la distribución de una muestra: habla de individuos."
+    },
+    {
+     "text": "La distribución de x̄ a lo largo de todas las muestras posibles de tamaño n",
+     "correct": true,
+     "feedback": "Correcto: cada punto es la media de una muestra distinta."
+    },
+    {
+     "text": "La distribución de todos los valores de la población",
+     "tag": "muestra_vs_distribucion_muestral",
+     "feedback": "Esa es la distribución poblacional."
+    }
+   ],
+   "explanation": "Población → individuos. Muestra → n individuos. Distribución muestral → muchas medias, una por muestra."
+  },
+  {
+   "id": "ex_m2_07",
+   "module": "m2",
+   "type": "numeric",
+   "difficulty": 1,
+   "lessonRef": "m2_l2",
+   "context": "El 30 % de los usuarios de una app abandona el registro antes de terminarlo.",
+   "prompt": "¿Cuál es el error estándar de p̂ en muestras aleatorias de 210 usuarios? (tres decimales)",
+   "answer": 0.032,
+   "tol": 0.001,
+   "decimals": 3,
+   "traps": [
+    {
+     "value": 0.001,
+     "tol": 0.0003,
+     "feedback": "Olvidaste la raíz cuadrada: √(0,3 · 0,7 / 210)."
+    },
+    {
+     "value": 0.458,
+     "tol": 0.003,
+     "tag": "de_vs_error_estandar",
+     "feedback": "√(p(1−p)) = 0,458 es la desviación de un usuario individual (0 o 1). Falta dividir entre n dentro de la raíz."
+    }
+   ],
+   "verify": [
+    {
+     "fn": "se_prop",
+     "args": {
+      "p": 0.3,
+      "n": 210
+     },
+     "field": "se",
+     "value": 0.0316,
+     "tol": 0.0001
+    }
+   ],
+   "explanation": "EE = √(0,3 × 0,7 / 210) = √0,001 ≈ 0,032: unos 3,2 puntos porcentuales."
+  },
+  {
+   "id": "ex_m2_08",
+   "module": "m2",
+   "type": "choice",
+   "difficulty": 2,
+   "lessonRef": "m2_l2",
+   "context": "El tiempo de viaje al campus tiene σ = 20 min. Muchos investigadores toman cada uno una muestra aleatoria de 100 estudiantes y calculan la media.",
+   "prompt": "¿Cuál es aproximadamente la desviación estándar de esas medias?",
+   "options": [
+    {
+     "text": "20 min",
+     "tag": "de_vs_error_estandar",
+     "feedback": "20 min es la variación entre estudiantes. Las medias de 100 estudiantes varían mucho menos."
+    },
+    {
+     "text": "2 min",
+     "correct": true,
+     "feedback": "Correcto: σ/√n = 20/10 = 2."
+    },
+    {
+     "text": "0,2 min",
+     "tag": "precision_lineal_n",
+     "feedback": "Dividiste entre n = 100; el error estándar divide entre √n = 10."
+    }
+   ],
+   "explanation": "La desviación estándar de las medias muestrales es el error estándar σ/√n."
+  },
+  {
+   "id": "ex_m2_09",
+   "module": "m2",
+   "type": "decision",
+   "difficulty": 3,
+   "lessonRef": "m2_l3",
+   "context": "Los tiempos de reparación de un equipo son muy asimétricos: la mayoría dura menos de una hora, pero algunas reparaciones tardan un día. Tienes 8 reparaciones.",
+   "prompt": "¿Es razonable suponer que x̄ sigue una distribución aproximadamente normal?",
+   "options": [
+    {
+     "text": "No es razonable",
+     "correct": true,
+     "feedback": "Correcto: con fuerte asimetría y n = 8, el TLC aún no ha actuado."
+    },
+    {
+     "text": "Sí, el TLC lo garantiza",
+     "tag": "condiciones_ignoradas",
+     "feedback": "El TLC necesita un n suficiente, y «suficiente» crece con la asimetría."
+    }
+   ],
+   "justificationPrompt": "¿Por qué?",
+   "justifications": [
+    {
+     "text": "Con una población muy asimétrica, el TLC necesita bastante más de 8 observaciones",
+     "correct": true,
+     "feedback": "Exacto: con asimetría fuerte pueden hacer falta 40 o más."
+    },
+    {
+     "text": "Porque con n < 30 nunca se puede usar la normal",
+     "feedback": "Si la población fuera casi simétrica, n = 8 podría bastar. La regla del 30 es orientativa."
+    },
+    {
+     "text": "Porque la normal solo sirve si los datos son normales, cualquiera sea n",
+     "tag": "tlc_datos_normales",
+     "feedback": "Justamente el TLC dice lo contrario: con n grande, x̄ es normal aunque los datos no lo sean."
+    }
+   ],
+   "explanation": "La calidad de la aproximación normal depende de n y de la forma de la población. En el laboratorio 2 puedes ver cuándo se cumple."
+  },
+  {
+   "id": "ex_m2_10",
+   "module": "m2",
+   "type": "numeric",
+   "difficulty": 2,
+   "lessonRef": "m2_l2",
+   "context": "Con n = 20 el error estándar de una media es 4.",
+   "prompt": "¿Qué tamaño de muestra se necesita para que sea 1?",
+   "answer": 320,
+   "tol": 0.5,
+   "decimals": 0,
+   "traps": [
+    {
+     "value": 80,
+     "tol": 0.5,
+     "tag": "precision_lineal_n",
+     "feedback": "Multiplicaste n por 4. Para dividir el error estándar entre 4 hay que multiplicar n por 4² = 16."
+    },
+    {
+     "value": 5,
+     "tol": 0.5,
+     "feedback": "Al disminuir el error estándar, n debe aumentar, no disminuir."
+    }
+   ],
+   "explanation": "EE ∝ 1/√n. Para reducirlo a la cuarta parte, n × 16 = 320."
+  },
+  {
+   "id": "ex_m3_01",
+   "module": "m3",
+   "type": "numeric",
+   "difficulty": 1,
+   "lessonRef": "m3_l1",
+   "context": "El puntaje de satisfacción de clientes tiene σ = 10 (conocida por estudios anteriores). Una muestra aleatoria de 25 clientes da x̄ = 78.",
+   "prompt": "¿Cuál es el límite superior del IC al 95 % para μ? (dos decimales)",
+   "answer": 81.92,
+   "tol": 0.02,
+   "decimals": 2,
+   "traps": [
+    {
+     "value": 97.6,
+     "tol": 0.05,
+     "tag": "de_vs_error_estandar",
+     "feedback": "Usaste σ = 10 como si fuera el error estándar. EE = 10/√25 = 2."
+    },
+    {
+     "value": 81.29,
+     "tol": 0.02,
+     "tag": "confianza_vs_amplitud",
+     "feedback": "1,645 corresponde al 90 %. Para 95 % el valor crítico es 1,96."
+    },
+    {
+     "value": 74.08,
+     "tol": 0.02,
+     "feedback": "Ese es el límite inferior."
+    }
+   ],
+   "verify": [
+    {
+     "fn": "ci_mean_z",
+     "args": {
+      "mean": 78,
+      "sigma": 10,
+      "n": 25,
+      "conf": 0.95
+     },
+     "field": "upper",
+     "value": 81.92,
+     "tol": 0.005
+    }
+   ],
+   "explanation": "EE = 10/5 = 2; margen = 1,96 × 2 = 3,92; IC 95 %: (74,08; 81,92)."
+  },
+  {
+   "id": "ex_m3_02",
+   "module": "m3",
+   "type": "conclusion",
+   "difficulty": 2,
+   "lessonRef": "m3_l2",
+   "context": "Una empresa de reparto obtiene, con 60 pedidos al azar, un IC al 95 % para el tiempo medio de entrega de (32,4; 37,8) minutos.",
+   "prompt": "Arma la conclusión correcta eligiendo un fragmento para cada parte.",
+   "slots": [
+    {
+     "label": "Grado de certeza",
+     "options": [
+      {
+       "text": "Con 95 % de confianza,",
+       "correct": true
+      },
+      {
+       "text": "Hay 95 % de probabilidad de que",
+       "tag": "ic_probabilidad_parametro",
+       "feedback": "El intervalo ya está calculado y μ es fija: contiene a μ o no. El 95 % es la tasa de acierto del método."
+      },
+      {
+       "text": "Con total certeza,",
+       "feedback": "Ningún intervalo basado en una muestra da certeza total."
+      }
+     ]
+    },
+    {
+     "label": "De qué se habla",
+     "options": [
+      {
+       "text": "el tiempo medio de entrega de todos los pedidos",
+       "correct": true
+      },
+      {
+       "text": "el tiempo de entrega del 95 % de los pedidos",
+       "tag": "ic_contiene_datos",
+       "feedback": "El IC es para la media, no para los pedidos individuales, que varían mucho más."
+      },
+      {
+       "text": "el tiempo medio de los 60 pedidos de la muestra",
+       "tag": "ic_sobre_estadistico",
+       "feedback": "Ese valor ya se conoce: es x̄ = 35,1, el centro del intervalo."
+      }
+     ]
+    },
+    {
+     "label": "Qué rango",
+     "options": [
+      {
+       "text": "está entre 32,4 y 37,8 minutos.",
+       "correct": true
+      },
+      {
+       "text": "es exactamente 35,1 minutos.",
+       "tag": "parametro_vs_estadistico",
+       "feedback": "35,1 es la estimación puntual. μ solo se acota con un rango."
+      }
+     ]
+    }
+   ],
+   "model": "Con 95 % de confianza, el tiempo medio de entrega de todos los pedidos está entre 32,4 y 37,8 minutos.",
+   "explanation": "La confianza describe el método; el intervalo es para μ, no para x̄ ni para los individuos."
+  },
+  {
+   "id": "ex_m3_03",
+   "module": "m3",
+   "type": "choice",
+   "difficulty": 1,
+   "lessonRef": "m3_l1",
+   "prompt": "Con la misma muestra, un analista calcula un IC al 95 % y otro al 99 %. ¿Qué es cierto?",
+   "options": [
+    {
+     "text": "El de 99 % es más ancho",
+     "correct": true,
+     "feedback": "Correcto: 2,576 frente a 1,960 errores estándar a cada lado."
+    },
+    {
+     "text": "El de 99 % es más estrecho porque es más preciso",
+     "tag": "confianza_vs_amplitud",
+     "feedback": "Más confianza exige abarcar más valores: el intervalo se ensancha."
+    },
+    {
+     "text": "Tienen el mismo ancho; solo cambia la probabilidad",
+     "feedback": "El valor crítico cambia, y con él el margen de error."
+    }
+   ],
+   "explanation": "Margen = valor crítico × EE. Subir la confianza sube el valor crítico."
+  },
+  {
+   "id": "ex_m3_04",
+   "module": "m3",
+   "type": "numeric",
+   "difficulty": 2,
+   "lessonRef": "m3_l3",
+   "context": "Se miden 16 baterías; σ es desconocida y se usará s.",
+   "prompt": "¿Qué valor crítico corresponde a un IC al 95 % para la duración media? (tres decimales)",
+   "answer": 2.131,
+   "tol": 0.002,
+   "decimals": 3,
+   "traps": [
+    {
+     "value": 1.96,
+     "tol": 0.002,
+     "tag": "z_en_lugar_de_t",
+     "feedback": "1,960 es de la normal. Con σ desconocida y n = 16 corresponde t con 15 gl."
+    },
+    {
+     "value": 2.12,
+     "tol": 0.002,
+     "tag": "z_en_lugar_de_t",
+     "feedback": "2,120 corresponde a 16 gl. Los grados de libertad son n − 1 = 15."
+    }
+   ],
+   "verify": [
+    {
+     "fn": "t_crit",
+     "args": {
+      "conf": 0.95,
+      "df": 15
+     },
+     "field": "critical",
+     "value": 2.131,
+     "tol": 0.0005
+    }
+   ],
+   "explanation": "σ desconocida → t con n − 1 = 15 gl. t(0,975; 15) = 2,131."
+  },
+  {
+   "id": "ex_m3_05",
+   "module": "m3",
+   "type": "numeric",
+   "difficulty": 2,
+   "lessonRef": "m3_l4",
+   "context": "En una muestra aleatoria de 600 egresados, 180 trabajan en un área distinta a su carrera.",
+   "prompt": "¿Cuál es el margen de error del IC al 95 % para la proporción? (tres decimales)",
+   "answer": 0.037,
+   "tol": 0.0015,
+   "decimals": 3,
+   "traps": [
+    {
+     "value": 0.019,
+     "tol": 0.001,
+     "tag": "de_vs_error_estandar",
+     "feedback": "0,019 es el error estándar. El margen lo multiplica por 1,96."
+    },
+    {
+     "value": 0.031,
+     "tol": 0.001,
+     "tag": "confianza_vs_amplitud",
+     "feedback": "Usaste 1,645 (90 %). Para 95 % es 1,96."
+    }
+   ],
+   "verify": [
+    {
+     "fn": "ci_prop",
+     "args": {
+      "x": 180,
+      "n": 600,
+      "conf": 0.95
+     },
+     "field": "margin",
+     "value": 0.0367,
+     "tol": 0.0002
+    }
+   ],
+   "explanation": "p̂ = 0,30; EE = √(0,3 × 0,7 / 600) ≈ 0,0187; margen = 1,96 × 0,0187 ≈ 0,037. IC: (0,263; 0,337)."
+  },
+  {
+   "id": "ex_m3_06",
+   "module": "m3",
+   "type": "numeric",
+   "difficulty": 2,
+   "lessonRef": "m3_l4",
+   "context": "Un laboratorio quiere estimar la resistencia media de un nuevo concreto con un margen de error de ±2 MPa al 95 %. Por ensayos previos, σ ≈ 12 MPa.",
+   "prompt": "¿Cuántas probetas debe ensayar como mínimo?",
+   "answer": 139,
+   "tol": 0.5,
+   "decimals": 0,
+   "traps": [
+    {
+     "value": 138,
+     "tol": 0.5,
+     "feedback": "(1,96 × 12 / 2)² = 138,3. El tamaño de muestra siempre se redondea hacia arriba: con 138 el margen quedaría un poco por encima de 2."
+    },
+    {
+     "value": 12,
+     "tol": 0.5,
+     "feedback": "Falta elevar al cuadrado: n = (z·σ/E)²."
+    }
+   ],
+   "verify": [
+    {
+     "fn": "n_mean",
+     "args": {
+      "sigma": 12,
+      "E": 2,
+      "conf": 0.95
+     },
+     "field": "n",
+     "value": 139,
+     "tol": 0.1
+    }
+   ],
+   "explanation": "n = (1,96 × 12 / 2)² = 11,76² ≈ 138,3 → 139 probetas."
+  },
+  {
+   "id": "ex_m3_07",
+   "module": "m3",
+   "type": "decision",
+   "difficulty": 2,
+   "lessonRef": "m3_l4",
+   "context": "Una encuesta telefónica aleatoria contactó a 3 000 números, respondieron 900 y reporta «48 % de aprobación, margen de error ±3,3 puntos».",
+   "prompt": "¿Qué tan lejos puede estar la aprobación real de 48 %?",
+   "options": [
+    {
+     "text": "Como máximo 3,3 puntos, con 95 % de confianza",
+     "tag": "margen_incluye_sesgo",
+     "feedback": "El margen supone que quienes respondieron son una muestra aleatoria. Con 70 % de no respuesta, eso es dudoso."
+    },
+    {
+     "text": "Posiblemente más de 3,3 puntos",
+     "correct": true,
+     "feedback": "Correcto: la no respuesta puede agregar un sesgo que el margen no mide."
+    }
+   ],
+   "justificationPrompt": "¿Por qué?",
+   "justifications": [
+    {
+     "text": "El margen solo cubre la variabilidad del muestreo; la no respuesta puede introducir sesgo",
+     "correct": true,
+     "feedback": "Exacto: si quienes contestan difieren de quienes no, el error real crece."
+    },
+    {
+     "text": "Porque 900 es una muestra demasiado pequeña",
+     "tag": "muestra_grande_corrige_sesgo",
+     "feedback": "900 aleatorios bastarían. El problema es quiénes respondieron, no cuántos."
+    },
+    {
+     "text": "Porque el margen debería calcularse con p = 0,5",
+     "feedback": "Con p̂ = 0,48 el margen es prácticamente el mismo."
+    }
+   ],
+   "explanation": "El margen de error cuantifica solo el azar del muestreo. Cobertura, no respuesta y redacción de preguntas son fuentes adicionales de error.",
+   "verify": [
+    {
+     "fn": "ci_prop",
+     "args": {
+      "x": 432,
+      "n": 900,
+      "conf": 0.95
+     },
+     "field": "margin",
+     "value": 0.033,
+     "tol": 0.0005
+    }
+   ]
+  },
+  {
+   "id": "ex_m3_08",
+   "module": "m3",
+   "type": "choice",
+   "difficulty": 2,
+   "lessonRef": "m3_l2",
+   "context": "Un informe dice: «IC 95 % para el ingreso medio mensual: (S/ 1 820; S/ 2 140)».",
+   "prompt": "¿Qué interpretación es correcta?",
+   "options": [
+    {
+     "text": "Hay un 95 % de probabilidad de que el ingreso medio esté entre 1 820 y 2 140",
+     "tag": "ic_probabilidad_parametro",
+     "feedback": "Una vez calculado, el intervalo contiene a μ o no. El 95 % se refiere al método."
+    },
+    {
+     "text": "El 95 % de las personas gana entre 1 820 y 2 140",
+     "tag": "ic_contiene_datos",
+     "feedback": "El intervalo es para la media; los ingresos individuales se dispersan muchísimo más."
+    },
+    {
+     "text": "El método usado acierta en el 95 % de las muestras; este intervalo es uno de sus resultados",
+     "correct": true,
+     "feedback": "Correcto: la confianza viene del procedimiento."
+    }
+   ],
+   "explanation": "«95 % de confianza» = el procedimiento captura a μ en el 95 % de las muestras posibles."
+  },
+  {
+   "id": "ex_m3_09",
+   "module": "m3",
+   "type": "decision",
+   "difficulty": 2,
+   "lessonRef": "m3_l3",
+   "context": "Se miden 8 muestras de agua para estimar la concentración media de nitratos: x̄ = 12,4 mg/L, s = 4,1 mg/L. La concentración en el río se considera aproximadamente normal.",
+   "prompt": "¿Cómo se construye el IC al 95 %?",
+   "options": [
+    {
+     "text": "Con t de Student y 7 grados de libertad",
+     "correct": true,
+     "feedback": "Correcto: σ desconocida, n pequeño, población aproximadamente normal."
+    },
+    {
+     "text": "Con z, porque la población es normal",
+     "tag": "z_en_lugar_de_t",
+     "feedback": "Que la población sea normal no basta: σ se estima con s y eso exige t."
+    },
+    {
+     "text": "No se puede: hacen falta al menos 30 datos",
+     "tag": "condiciones_ignoradas",
+     "feedback": "Con población aproximadamente normal, el intervalo t funciona con n pequeño."
+    }
+   ],
+   "justificationPrompt": "¿Por qué?",
+   "justifications": [
+    {
+     "text": "Al estimar σ con s se añade incertidumbre, y t la compensa con colas más gruesas",
+     "correct": true,
+     "feedback": "Exacto: t(0,975; 7) = 2,365 frente a 1,96."
+    },
+    {
+     "text": "Porque t se usa cuando la población no es normal",
+     "tag": "tlc_datos_normales",
+     "feedback": "Al contrario: t supone población aproximadamente normal cuando n es pequeño."
+    },
+    {
+     "text": "Porque t da siempre intervalos más estrechos",
+     "tag": "confianza_vs_amplitud",
+     "feedback": "t da intervalos más anchos que z; justamente por eso capturan a μ con la frecuencia prometida."
+    }
+   ],
+   "explanation": "IC: 12,4 ± 2,365 × 4,1/√8 ≈ 12,4 ± 3,4 mg/L.",
+   "verify": [
+    {
+     "fn": "ci_mean_t",
+     "args": {
+      "mean": 12.4,
+      "sd": 4.1,
+      "n": 8,
+      "conf": 0.95
+     },
+     "field": "critical",
+     "value": 2.365,
+     "tol": 0.0005
+    },
+    {
+     "fn": "ci_mean_t",
+     "args": {
+      "mean": 12.4,
+      "sd": 4.1,
+      "n": 8,
+      "conf": 0.95
+     },
+     "field": "margin",
+     "value": 3.43,
+     "tol": 0.01
+    }
+   ]
+  },
+  {
+   "id": "ex_m3_10",
+   "module": "m3",
+   "type": "choice",
+   "difficulty": 2,
+   "lessonRef": "m3_l4",
+   "prompt": "Un estudio pasa de n = 400 a n = 800 manteniendo el nivel de confianza. ¿Qué le ocurre aproximadamente al margen de error?",
+   "options": [
+    {
+     "text": "Se reduce a la mitad",
+     "tag": "precision_lineal_n",
+     "feedback": "Para la mitad habría que cuadruplicar n (1 600)."
+    },
+    {
+     "text": "Se reduce en torno a un 29 %",
+     "correct": true,
+     "feedback": "Correcto: se multiplica por 1/√2 ≈ 0,71."
+    },
+    {
+     "text": "No cambia",
+     "feedback": "El margen depende de √n: sí cambia."
+    }
+   ],
+   "explanation": "Margen ∝ 1/√n. Duplicar n multiplica el margen por 0,707."
+  },
+  {
+   "id": "ex_m4_01",
+   "module": "m4",
+   "type": "choice",
+   "difficulty": 1,
+   "lessonRef": "m4_l2",
+   "context": "Una embotelladora declara que sus botellas contienen en promedio 500 ml. Una asociación de consumidores sospecha que llenan de menos.",
+   "prompt": "¿Qué par de hipótesis debe plantear la asociación?",
+   "options": [
+    {
+     "text": "H0: μ = 500   H1: μ < 500",
+     "correct": true,
+     "feedback": "Correcto: la igualdad en H0 y la sospecha, que requiere evidencia, en H1."
+    },
+    {
+     "text": "H0: x̄ = 500   H1: x̄ < 500",
+     "tag": "hipotesis_con_estadistico",
+     "feedback": "x̄ se calcula con la muestra; no hay nada que probar sobre él. Las hipótesis son sobre μ."
+    },
+    {
+     "text": "H0: μ < 500   H1: μ = 500",
+     "tag": "cola_mal_elegida",
+     "feedback": "Invertiste los papeles: la igualdad va en H0 y lo que se quiere demostrar, en H1."
+    },
+    {
+     "text": "H0: μ = 500   H1: μ > 500",
+     "tag": "cola_mal_elegida",
+     "feedback": "La sospecha es que llenan de menos: la dirección es μ < 500."
+    }
+   ],
+   "explanation": "H0 contiene la igualdad (lo declarado); H1, la afirmación que requiere evidencia. Ambas sobre el parámetro."
+  },
+  {
+   "id": "ex_m4_02",
+   "module": "m4",
+   "type": "conclusion",
+   "difficulty": 3,
+   "lessonRef": "m4_l3",
+   "context": "Un experimento compara la tasa de registro con el diseño actual y con uno nuevo. La prueba bilateral da p = 0,03.",
+   "prompt": "Arma una interpretación correcta del p-valor.",
+   "slots": [
+    {
+     "label": "Supuesto",
+     "options": [
+      {
+       "text": "Si el nuevo diseño no tuviera ningún efecto,",
+       "correct": true
+      },
+      {
+       "text": "Hay un 3 % de probabilidad de que",
+       "tag": "p_prob_h0",
+       "feedback": "El p-valor no es la probabilidad de una hipótesis; se calcula suponiendo que H0 es cierta."
+      },
+      {
+       "text": "Con un 97 % de probabilidad de que el diseño funcione,",
+       "tag": "p_prob_h0",
+       "feedback": "1 − p no es la probabilidad de H1."
+      }
+     ]
+    },
+    {
+     "label": "Qué sería raro",
+     "options": [
+      {
+       "text": "una diferencia tan grande o mayor que la observada",
+       "correct": true
+      },
+      {
+       "text": "la diferencia se deba al azar",
+       "tag": "p_azar",
+       "feedback": "El p-valor no mide la probabilidad de que la explicación sea el azar."
+      },
+      {
+       "text": "el nuevo diseño sea peor",
+       "tag": "cola_mal_elegida",
+       "feedback": "La prueba es bilateral: considera diferencias extremas en ambas direcciones."
+      }
+     ]
+    },
+    {
+     "label": "Con qué frecuencia",
+     "options": [
+      {
+       "text": "aparecería en alrededor del 3 % de los experimentos.",
+       "correct": true
+      },
+      {
+       "text": "está demostrada en el 97 % de los casos.",
+       "tag": "p_prob_h0",
+       "feedback": "El p-valor no «demuestra» nada con un porcentaje: es una frecuencia en el mundo de H0."
+      }
+     ]
+    }
+   ],
+   "model": "Si el nuevo diseño no tuviera ningún efecto, una diferencia tan grande o mayor que la observada aparecería en alrededor del 3 % de los experimentos.",
+   "explanation": "p = P(datos tan extremos o más | H0 cierta). Todo lo demás —probabilidad de H0, de H1 o del «azar»— es otra pregunta."
+  },
+  {
+   "id": "ex_m4_03",
+   "module": "m4",
+   "type": "numeric",
+   "difficulty": 1,
+   "lessonRef": "m4_l3",
+   "context": "H0: μ = 50. Una muestra de 16 da x̄ = 48,5 y s = 4.",
+   "prompt": "¿Cuál es el estadístico t? (dos decimales)",
+   "answer": -1.5,
+   "tol": 0.01,
+   "decimals": 2,
+   "traps": [
+    {
+     "value": -0.375,
+     "tol": 0.005,
+     "tag": "de_vs_error_estandar",
+     "feedback": "Dividiste entre s = 4. El denominador es el error estándar: 4/√16 = 1."
+    },
+    {
+     "value": 1.5,
+     "tol": 0.01,
+     "feedback": "Revisa el signo: x̄ está por debajo de μ0, así que t es negativo."
+    }
+   ],
+   "verify": [
+    {
+     "fn": "test_mean_t",
+     "args": {
+      "mean": 48.5,
+      "sd": 4,
+      "n": 16,
+      "mu0": 50,
+      "tail": "two"
+     },
+     "field": "statistic",
+     "value": -1.5,
+     "tol": 0.0001
+    }
+   ],
+   "explanation": "t = (48,5 − 50)/(4/√16) = −1,5/1 = −1,5. La media muestral está 1,5 errores estándar por debajo de μ0."
+  },
+  {
+   "id": "ex_m4_04",
+   "module": "m4",
+   "type": "decision",
+   "difficulty": 2,
+   "lessonRef": "m4_l1",
+   "context": "Una prueba de si un aditivo cambia el rendimiento de un motor da p = 0,12, con α = 0,05.",
+   "prompt": "¿Qué decides?",
+   "options": [
+    {
+     "text": "Rechazar H0",
+     "tag": "alfa_vs_p",
+     "feedback": "Se rechaza si p ≤ α; aquí 0,12 > 0,05."
+    },
+    {
+     "text": "No rechazar H0",
+     "correct": true,
+     "feedback": "Correcto: la evidencia no alcanza el umbral fijado."
+    },
+    {
+     "text": "Aceptar H1 con 88 % de confianza",
+     "tag": "p_prob_h0",
+     "feedback": "1 − p no es una confianza en H1."
+    }
+   ],
+   "justificationPrompt": "¿Qué significa esa decisión?",
+   "justifications": [
+    {
+     "text": "Los datos no aportan evidencia suficiente de un efecto; eso no prueba que no lo haya",
+     "correct": true,
+     "feedback": "Exacto: «no culpable» no es «inocente probado»."
+    },
+    {
+     "text": "Queda demostrado que el aditivo no tiene efecto",
+     "tag": "no_rechazar_es_aceptar",
+     "feedback": "No rechazar H0 no la demuestra: puede haber un efecto que la muestra no detectó."
+    },
+    {
+     "text": "Hay un 12 % de probabilidad de que el aditivo no tenga efecto",
+     "tag": "p_prob_h0",
+     "feedback": "El p-valor no es la probabilidad de H0."
+    }
+   ],
+   "explanation": "p = 0,12 > α = 0,05: no se rechaza H0. La conclusión correcta es de evidencia insuficiente, y conviene mirar el IC para ver qué efectos siguen siendo plausibles."
+  },
+  {
+   "id": "ex_m4_05",
+   "module": "m4",
+   "type": "classify",
+   "difficulty": 2,
+   "lessonRef": "m4_l4",
+   "prompt": "Clasifica cada situación como error tipo I o tipo II. La hipótesis nula aparece entre corchetes.",
+   "categories": [
+    "Error tipo I",
+    "Error tipo II"
+   ],
+   "items": [
+    {
+     "text": "[H0: el paciente está sano] Se le diagnostica una enfermedad que no tiene",
+     "category": 0,
+     "tag": "errores_tipo_confundidos",
+     "feedback": "Se rechazó una H0 verdadera: falsa alarma, tipo I."
+    },
+    {
+     "text": "[H0: el paciente está sano] No se detecta una enfermedad que sí tiene",
+     "category": 1,
+     "tag": "errores_tipo_confundidos",
+     "feedback": "No se rechazó una H0 falsa: tipo II."
+    },
+    {
+     "text": "[H0: el lote cumple] Se rechaza un lote que cumplía",
+     "category": 0,
+     "tag": "errores_tipo_confundidos",
+     "feedback": "H0 era cierta y se rechazó: tipo I."
+    },
+    {
+     "text": "[H0: el lote cumple] Se acepta un lote defectuoso",
+     "category": 1,
+     "tag": "errores_tipo_confundidos",
+     "feedback": "H0 era falsa y no se rechazó: tipo II."
+    },
+    {
+     "text": "[H0: el acusado es inocente] Se condena a un inocente",
+     "category": 0,
+     "tag": "errores_tipo_confundidos",
+     "feedback": "Rechazar una H0 verdadera: tipo I."
+    },
+    {
+     "text": "[H0: la campaña no aumenta ventas] Se descarta una campaña que sí funcionaba",
+     "category": 1,
+     "tag": "errores_tipo_confundidos",
+     "feedback": "El efecto existía y no se detectó: tipo II."
+    }
+   ],
+   "explanation": "Tipo I: H0 verdadera, rechazada (falsa alarma). Tipo II: H0 falsa, no rechazada (efecto que se escapa)."
+  },
+  {
+   "id": "ex_m4_06",
+   "module": "m4",
+   "type": "choice",
+   "difficulty": 2,
+   "lessonRef": "m4_l3",
+   "context": "Una investigadora planificó su estudio con α = 0,05. Obtuvo p = 0,07 y decidió usar α = 0,10 «porque también es un valor aceptado».",
+   "prompt": "¿Qué problema hay?",
+   "options": [
+    {
+     "text": "Ninguno: α = 0,10 es un nivel válido",
+     "tag": "alfa_vs_p",
+     "feedback": "El valor es válido, el momento no: elegir α después de ver p hace que la decisión dependa del resultado."
+    },
+    {
+     "text": "α debe fijarse antes de ver los datos; cambiarlo después infla el error tipo I",
+     "correct": true,
+     "feedback": "Correcto: con esa práctica, el riesgo real de falsa alarma es mayor que el declarado."
+    },
+    {
+     "text": "Que p = 0,07 prueba que H0 es verdadera",
+     "tag": "no_rechazar_es_aceptar",
+     "feedback": "No rechazar no prueba H0; y el problema aquí es otro."
+    }
+   ],
+   "explanation": "α es un compromiso previo. Lo honesto es reportar p = 0,07 con el α planificado y discutir el resultado, sin mover el umbral."
+  },
+  {
+   "id": "ex_m4_07",
+   "module": "m4",
+   "type": "numeric",
+   "difficulty": 2,
+   "lessonRef": "m4_l3",
+   "context": "Una prueba bilateral sobre una proporción da un estadístico z = 2,10.",
+   "prompt": "¿Cuál es el p-valor? (cuatro decimales)",
+   "answer": 0.0357,
+   "tol": 0.0005,
+   "decimals": 4,
+   "traps": [
+    {
+     "value": 0.0179,
+     "tol": 0.0005,
+     "tag": "cola_mal_elegida",
+     "feedback": "Ese es el p-valor unilateral. En una prueba bilateral se suman las dos colas."
+    },
+    {
+     "value": 0.9821,
+     "tol": 0.0005,
+     "feedback": "Ese es P(Z ≤ 2,10), no la cola."
+    }
+   ],
+   "verify": [
+    {
+     "fn": "test_mean_z",
+     "args": {
+      "mean": 2.1,
+      "sigma": 1,
+      "n": 1,
+      "mu0": 0,
+      "tail": "two"
+     },
+     "field": "p",
+     "value": 0.0357,
+     "tol": 0.0001
+    }
+   ],
+   "explanation": "p = 2 × P(Z > 2,10) = 2 × 0,0179 = 0,0357."
+  },
+  {
+   "id": "ex_m4_08",
+   "module": "m4",
+   "type": "choice",
+   "difficulty": 3,
+   "lessonRef": "m4_l4",
+   "context": "Un estudio con 12 deportistas no encuentra una mejora significativa con un suplemento (p = 0,31). El autor concluye: «El suplemento no mejora el rendimiento».",
+   "prompt": "¿Cuál es la mejor crítica?",
+   "options": [
+    {
+     "text": "La conclusión es correcta porque p > 0,05",
+     "tag": "no_rechazar_es_aceptar",
+     "feedback": "p > 0,05 indica evidencia insuficiente, no ausencia de efecto."
+    },
+    {
+     "text": "Con 12 participantes la potencia puede ser muy baja: el estudio no puede descartar un efecto",
+     "correct": true,
+     "feedback": "Correcto: el resultado es «no concluyente», no «no hay efecto»."
+    },
+    {
+     "text": "Si el efecto existiera, 12 deportistas habrían bastado para detectarlo",
+     "tag": "baja_potencia",
+     "feedback": "Con n = 12, efectos moderados se escapan la mayoría de las veces."
+    },
+    {
+     "text": "Debió usar α = 0,35 para poder rechazar",
+     "tag": "alfa_vs_p",
+     "feedback": "Ajustar α al resultado invalida la prueba."
+    }
+   ],
+   "explanation": "Antes de interpretar un no-rechazo pregunta por la potencia y mira el IC: si incluye efectos importantes, el estudio no es concluyente."
+  },
+  {
+   "id": "ex_m4_09",
+   "module": "m4",
+   "type": "choice",
+   "difficulty": 2,
+   "lessonRef": "m4_l2",
+   "context": "Un analista plantea una prueba bilateral y obtiene p = 0,08. Como x̄ salió mayor que μ0, cambia a una prueba unilateral derecha y reporta p = 0,04.",
+   "prompt": "¿Es correcto?",
+   "options": [
+    {
+     "text": "Sí: los datos indican la dirección del efecto",
+     "tag": "cola_mal_elegida",
+     "feedback": "Elegir la cola mirando los datos duplica el riesgo real de error tipo I."
+    },
+    {
+     "text": "No: la dirección debe fijarse antes, según la pregunta; el p-valor válido es 0,08",
+     "correct": true,
+     "feedback": "Correcto: el cambio a posteriori fabrica significancia."
+    },
+    {
+     "text": "Sí, siempre que α se cambie a 0,10",
+     "tag": "alfa_vs_p",
+     "feedback": "Cambiar α también después de ver los datos agrava el problema."
+    }
+   ],
+   "explanation": "La hipótesis alternativa es parte del diseño. Si no había una razón previa para una sola dirección, la prueba es bilateral."
+  },
+  {
+   "id": "ex_m4_10",
+   "module": "m4",
+   "type": "decision",
+   "difficulty": 2,
+   "lessonRef": "m4_l4",
+   "context": "Para el tiempo medio de vida de un componente se obtuvo IC 95 %: (101,2; 108,6) horas. El fabricante anuncia μ = 100 h.",
+   "prompt": "¿Qué decide una prueba bilateral de H0: μ = 100 con α = 0,05?",
+   "options": [
+    {
+     "text": "Rechaza H0",
+     "correct": true,
+     "feedback": "Correcto: 100 no está entre los valores plausibles."
+    },
+    {
+     "text": "No rechaza H0",
+     "tag": "no_rechazar_es_aceptar",
+     "feedback": "El IC 95 % excluye 100: la prueba bilateral al 5 % sí rechaza."
+    },
+    {
+     "text": "No se puede saber sin el p-valor",
+     "feedback": "Sí se puede: hay una correspondencia directa entre el IC 95 % y la prueba bilateral al 5 %."
+    }
+   ],
+   "justificationPrompt": "¿Por qué?",
+   "justifications": [
+    {
+     "text": "Porque 100 queda fuera del IC al 95 %",
+     "correct": true,
+     "feedback": "Exacto: la prueba bilateral al 5 % rechaza justamente los valores fuera del IC 95 %."
+    },
+    {
+     "text": "Porque x̄ = 104,9 es mayor que 100",
+     "tag": "parametro_vs_estadistico",
+     "feedback": "Que x̄ supere 100 no basta: habría que ver si la diferencia supera lo que el azar produce. El IC ya lo tiene en cuenta."
+    },
+    {
+     "text": "Porque el intervalo mide menos de 10 horas",
+     "feedback": "El ancho no decide; decide si 100 está dentro o fuera."
+    }
+   ],
+   "explanation": "IC 95 % y prueba bilateral al 5 % son dos caras del mismo cálculo. El IC agrega cuánto más duran los componentes: entre 1,2 y 8,6 h por encima de lo anunciado."
+  },
+  {
+   "id": "ex_m5_01",
+   "module": "m5",
+   "type": "classify",
+   "difficulty": 2,
+   "lessonRef": "m5_l1",
+   "prompt": "Elige el procedimiento adecuado para cada situación.",
+   "categories": [
+    "Una media",
+    "Una proporción",
+    "Dos medias independientes",
+    "Dos proporciones",
+    "Datos pareados"
+   ],
+   "items": [
+    {
+     "text": "Tiempo medio de carga de una web frente a la meta de 2 s",
+     "category": 0,
+     "tag": "procedimiento_equivocado",
+     "feedback": "Una variable numérica y un valor de referencia: una media."
+    },
+    {
+     "text": "% de piezas defectuosas frente al 3 % permitido",
+     "category": 1,
+     "tag": "procedimiento_equivocado",
+     "feedback": "Variable sí/no y un valor de referencia: una proporción."
+    },
+    {
+     "text": "Nota media con el método A frente al método B (grupos distintos)",
+     "category": 2,
+     "tag": "procedimiento_equivocado",
+     "feedback": "Dos grupos de personas distintas y una variable numérica: dos medias independientes."
+    },
+    {
+     "text": "% de clics en el anuncio A frente al anuncio B",
+     "category": 3,
+     "tag": "procedimiento_equivocado",
+     "feedback": "Variable sí/no en dos grupos: dos proporciones."
+    },
+    {
+     "text": "Peso de 30 personas antes y después de una dieta",
+     "category": 4,
+     "tag": "procedimiento_equivocado",
+     "feedback": "Las mismas personas medidas dos veces: pareados."
+    },
+    {
+     "text": "Rendimiento de 20 parcelas con dos fertilizantes, uno en cada mitad de cada parcela",
+     "category": 4,
+     "tag": "procedimiento_equivocado",
+     "feedback": "Cada parcela aporta las dos mediciones: pareados."
+    }
+   ],
+   "explanation": "Tipo de variable → media o proporción. Número de grupos → uno o dos. ¿Mismos individuos? → pareados."
+  },
+  {
+   "id": "ex_m5_02",
+   "module": "m5",
+   "type": "numeric",
+   "difficulty": 2,
+   "lessonRef": "m5_l3",
+   "context": "Dos grupos de 40 estudiantes: método nuevo x̄1 = 72, s1 = 10; método tradicional x̄2 = 68, s2 = 10.",
+   "prompt": "¿Cuál es la d de Cohen? (dos decimales)",
+   "answer": 0.4,
+   "tol": 0.01,
+   "decimals": 2,
+   "traps": [
+    {
+     "value": 1.79,
+     "tol": 0.01,
+     "tag": "significativo_importante",
+     "feedback": "1,79 es el estadístico t. El tamaño del efecto divide la diferencia entre la desviación estándar, no entre el error estándar."
+    },
+    {
+     "value": 4,
+     "tol": 0.01,
+     "feedback": "4 es la diferencia en puntos. La d la expresa en desviaciones estándar."
+    }
+   ],
+   "verify": [
+    {
+     "fn": "cohen_d",
+     "args": {
+      "mean1": 72,
+      "sd1": 10,
+      "n1": 40,
+      "mean2": 68,
+      "sd2": 10,
+      "n2": 40
+     },
+     "field": "d",
+     "value": 0.4,
+     "tol": 0.0001
+    },
+    {
+     "fn": "test_diff_means",
+     "args": {
+      "mean1": 72,
+      "sd1": 10,
+      "n1": 40,
+      "mean2": 68,
+      "sd2": 10,
+      "n2": 40,
+      "tail": "two"
+     },
+     "field": "p",
+     "value": 0.0775,
+     "tol": 0.0005
+    }
+   ],
+   "explanation": "d = (72 − 68)/10 = 0,4: un efecto entre pequeño y mediano. Curiosamente, la prueba da p ≈ 0,078: un efecto moderado puede no salir significativo con 40 por grupo. Significancia y tamaño del efecto responden preguntas distintas."
+  },
+  {
+   "id": "ex_m5_03",
+   "module": "m5",
+   "type": "decision",
+   "difficulty": 2,
+   "lessonRef": "m5_l3",
+   "context": "Tras un rediseño probado con 80 000 usuarios, el tiempo medio de sesión sube de 5,20 a 5,23 minutos (p < 0,001). Implementarlo en todas las plataformas cuesta el presupuesto de un trimestre.",
+   "prompt": "¿Qué recomiendas?",
+   "options": [
+    {
+     "text": "Implementarlo: p < 0,001 demuestra un efecto importante",
+     "tag": "significativo_importante",
+     "feedback": "El p-valor dice que el efecto probablemente no es cero, no que sea grande."
+    },
+    {
+     "text": "Evaluar si 0,03 minutos justifica el costo antes de decidir",
+     "correct": true,
+     "feedback": "Correcto: la decisión depende del valor de negocio del efecto, no del p-valor."
+    },
+    {
+     "text": "Descartar el estudio: con tantos datos los p-valores no son válidos",
+     "feedback": "Los p-valores son válidos; lo que exige cuidado es su interpretación."
+    }
+   ],
+   "justificationPrompt": "¿Por qué?",
+   "justifications": [
+    {
+     "text": "El p-valor mide evidencia contra «efecto cero», no el tamaño del efecto",
+     "correct": true,
+     "feedback": "Exacto: con n enorme, efectos minúsculos salen significativos."
+    },
+    {
+     "text": "Con muestras grandes cualquier diferencia es causal",
+     "tag": "observacional_causal",
+     "feedback": "El tamaño de muestra no tiene relación con la causalidad."
+    },
+    {
+     "text": "Porque el intervalo de confianza sería muy ancho",
+     "feedback": "Con 80 000 usuarios el intervalo es muy estrecho."
+    }
+   ],
+   "explanation": "0,03 min son 1,8 segundos por sesión. Estadísticamente real, quizá comercialmente irrelevante: esa es una decisión de negocio."
+  },
+  {
+   "id": "ex_m5_04",
+   "module": "m5",
+   "type": "choice",
+   "difficulty": 2,
+   "lessonRef": "m5_l2",
+   "context": "Una encuesta a 600 empleados encuentra que quienes hacen teletrabajo reportan una productividad significativamente mayor (p = 0,01). Cada empleado eligió su modalidad.",
+   "prompt": "¿Qué se puede concluir?",
+   "options": [
+    {
+     "text": "El teletrabajo aumenta la productividad",
+     "tag": "observacional_causal",
+     "feedback": "Los empleados eligieron su modalidad: puestos, antigüedad o motivación pueden explicar la diferencia."
+    },
+    {
+     "text": "Hay una asociación; puede deberse a variables de confusión",
+     "correct": true,
+     "feedback": "Correcto: sin asignación aleatoria, la diferencia no se puede atribuir al teletrabajo."
+    },
+    {
+     "text": "Nada, porque p = 0,01 no es suficientemente pequeño",
+     "tag": "alfa_vs_p",
+     "feedback": "p = 0,01 es evidencia fuerte de una diferencia; el problema es la interpretación causal."
+    }
+   ],
+   "explanation": "Significativo ≠ causal. Para hablar de causa, habría que asignar la modalidad al azar."
+  },
+  {
+   "id": "ex_m5_05",
+   "module": "m5",
+   "type": "numeric",
+   "difficulty": 2,
+   "lessonRef": "m5_l4",
+   "context": "Un equipo compara 15 indicadores entre dos sucursales donde en realidad no hay ninguna diferencia. Cada prueba usa α = 0,05 y son independientes.",
+   "prompt": "¿Cuál es la probabilidad de encontrar al menos un resultado significativo? (dos decimales)",
+   "answer": 0.54,
+   "tol": 0.01,
+   "decimals": 2,
+   "traps": [
+    {
+     "value": 0.05,
+     "tol": 0.005,
+     "tag": "comparaciones_multiples",
+     "feedback": "0,05 es el riesgo de una sola prueba. Con 15, los riesgos se acumulan."
+    },
+    {
+     "value": 0.75,
+     "tol": 0.01,
+     "tag": "comparaciones_multiples",
+     "feedback": "15 × 0,05 = 0,75 sobreestima: se usa 1 − 0,95¹⁵."
+    }
+   ],
+   "verify": [
+    {
+     "fn": "fwer",
+     "args": {
+      "k": 15,
+      "alpha": 0.05
+     },
+     "field": "p",
+     "value": 0.5367,
+     "tol": 0.0005
+    }
+   ],
+   "explanation": "P(al menos uno) = 1 − 0,95¹⁵ ≈ 0,54. Más de la mitad de las veces aparecería un «hallazgo» falso."
+  },
+  {
+   "id": "ex_m5_06",
+   "module": "m5",
+   "type": "decision",
+   "difficulty": 3,
+   "lessonRef": "m5_l4",
+   "context": "Un ensayo no encontró efecto global de un medicamento. Al analizar 12 subgrupos (por edad y sexo), uno —mujeres de 40 a 50 años— dio p = 0,03.",
+   "prompt": "¿Se debe anunciar que el medicamento funciona en ese subgrupo?",
+   "options": [
+    {
+     "text": "Sí: p = 0,03 < 0,05",
+     "tag": "comparaciones_multiples",
+     "feedback": "Con 12 subgrupos, que alguno dé p < 0,05 solo por azar es bastante probable."
+    },
+    {
+     "text": "No: es una hipótesis a confirmar en un estudio nuevo",
+     "correct": true,
+     "feedback": "Correcto: el hallazgo es exploratorio."
+    }
+   ],
+   "justificationPrompt": "¿Por qué?",
+   "justifications": [
+    {
+     "text": "Con 12 pruebas sin efecto, la probabilidad de al menos un falso positivo es cerca de 0,46",
+     "correct": true,
+     "feedback": "Exacto: 1 − 0,95¹² ≈ 0,46."
+    },
+    {
+     "text": "Porque en los subgrupos n es mayor",
+     "feedback": "Al contrario: cada subgrupo es más pequeño que la muestra total."
+    },
+    {
+     "text": "Porque el efecto en mujeres es causal y en el resto no",
+     "tag": "observacional_causal",
+     "feedback": "El problema no es causal, sino la cantidad de pruebas realizadas."
+    }
+   ],
+   "verify": [
+    {
+     "fn": "fwer",
+     "args": {
+      "k": 12,
+      "alpha": 0.05
+     },
+     "field": "p",
+     "value": 0.4596,
+     "tol": 0.0005
+    }
+   ],
+   "explanation": "Con Bonferroni, cada subgrupo debería alcanzar p ≤ 0,05/12 ≈ 0,004. El hallazgo sirve para diseñar el próximo estudio, no para una conclusión."
+  },
+  {
+   "id": "ex_m5_07",
+   "module": "m5",
+   "type": "conclusion",
+   "difficulty": 3,
+   "lessonRef": "m5_l2",
+   "context": "Una planta asignó al azar 60 lotes a dos procesos. Diferencia de medias (nuevo − actual) en tiempo de producción: IC 95 % (−4,1; −0,7) min; p = 0,008.",
+   "prompt": "Arma la conclusión para el informe de gerencia.",
+   "slots": [
+    {
+     "label": "Hallazgo",
+     "options": [
+      {
+       "text": "El nuevo proceso reduce el tiempo medio de producción",
+       "correct": true
+      },
+      {
+       "text": "El nuevo proceso reduce el tiempo de todos los lotes",
+       "tag": "ic_contiene_datos",
+       "feedback": "El IC habla de la media; algunos lotes pueden tardar más con el nuevo proceso."
+      },
+      {
+       "text": "No se observa diferencia entre los procesos",
+       "tag": "no_rechazar_es_aceptar",
+       "feedback": "El IC excluye el 0 y p = 0,008: sí hay evidencia de diferencia."
+      }
+     ]
+    },
+    {
+     "label": "Magnitud",
+     "options": [
+      {
+       "text": "entre 0,7 y 4,1 minutos por lote,",
+       "correct": true
+      },
+      {
+       "text": "en exactamente 2,4 minutos por lote,",
+       "tag": "parametro_vs_estadistico",
+       "feedback": "2,4 es la estimación puntual; la reducción real se acota con el IC."
+      },
+      {
+       "text": "con un 99,2 % de probabilidad,",
+       "tag": "p_prob_h0",
+       "feedback": "1 − p no es la probabilidad de que el nuevo proceso sea mejor."
+      }
+     ]
+    },
+    {
+     "label": "Respaldo",
+     "options": [
+      {
+       "text": "y como los lotes se asignaron al azar, la reducción puede atribuirse al proceso.",
+       "correct": true
+      },
+      {
+       "text": "aunque es solo una asociación y no permite hablar de causa.",
+       "feedback": "Hubo asignación aleatoria: sí permite atribuir la diferencia al proceso."
+      },
+      {
+       "text": "lo cual es importante porque p es muy pequeño.",
+       "tag": "significativo_importante",
+       "feedback": "La importancia la da la magnitud (0,7 a 4,1 min) en el contexto de la planta, no el p-valor."
+      }
+     ]
+    }
+   ],
+   "model": "El nuevo proceso reduce el tiempo medio de producción entre 0,7 y 4,1 minutos por lote, y como los lotes se asignaron al azar, la reducción puede atribuirse al proceso.",
+   "explanation": "Un buen informe dice qué cambió, cuánto (con su intervalo) y por qué se puede atribuir al tratamiento."
+  },
+  {
+   "id": "ex_m5_08",
+   "module": "m5",
+   "type": "choice",
+   "difficulty": 2,
+   "lessonRef": "m5_l1",
+   "context": "25 soldadores unen dos piezas de prueba cada uno: una con el electrodo A y otra con el electrodo B. Se mide la resistencia de cada unión.",
+   "prompt": "¿Cómo se comparan los electrodos?",
+   "options": [
+    {
+     "text": "Prueba t pareada sobre las 25 diferencias A − B",
+     "correct": true,
+     "feedback": "Correcto: cada soldador aporta ambas mediciones; la diferencia elimina el efecto de la habilidad de cada uno."
+    },
+    {
+     "text": "Prueba de Welch con dos grupos de 25",
+     "tag": "procedimiento_equivocado",
+     "feedback": "Los grupos no son independientes: son los mismos soldadores. Welch ignoraría esa ventaja."
+    },
+    {
+     "text": "Prueba de dos proporciones",
+     "tag": "procedimiento_equivocado",
+     "feedback": "La resistencia es numérica, no sí/no."
+    }
+   ],
+   "explanation": "Datos pareados → se analiza la diferencia de cada par como una sola muestra."
+  },
+  {
+   "id": "ex_m5_09",
+   "module": "m5",
+   "type": "decision",
+   "difficulty": 2,
+   "lessonRef": "m5_l2",
+   "context": "A/B de dos correos de cobranza. IC 95 % para p_A − p_B (tasa de pago): (−0,012; 0,046).",
+   "prompt": "¿Qué concluyes al 5 %?",
+   "options": [
+    {
+     "text": "No hay evidencia de diferencia entre los correos",
+     "correct": true,
+     "feedback": "Correcto: el 0 es un valor plausible."
+    },
+    {
+     "text": "El correo A es mejor porque el centro del intervalo es positivo",
+     "tag": "parametro_vs_estadistico",
+     "feedback": "El centro es p̂_A − p̂_B = 0,017, pero el intervalo incluye el 0 y valores negativos."
+    },
+    {
+     "text": "Los dos correos tienen exactamente la misma tasa de pago",
+     "tag": "no_rechazar_es_aceptar",
+     "feedback": "No rechazar la igualdad no la demuestra: A podría ser hasta 4,6 puntos mejor."
+    }
+   ],
+   "justificationPrompt": "¿Por qué?",
+   "justifications": [
+    {
+     "text": "El intervalo contiene al 0",
+     "correct": true,
+     "feedback": "Exacto: una diferencia nula es compatible con los datos."
+    },
+    {
+     "text": "Porque el intervalo contiene más valores positivos que negativos",
+     "tag": "ic_probabilidad_parametro",
+     "feedback": "El intervalo no reparte probabilidades entre sus valores."
+    },
+    {
+     "text": "Porque la diferencia es menor que 5 puntos",
+     "tag": "significativo_importante",
+     "feedback": "La relevancia práctica y la significancia son preguntas distintas; aquí la clave es si incluye el 0."
+    }
+   ],
+   "explanation": "Un IC para una diferencia que contiene al 0 equivale a no rechazar H0: p_A = p_B en la prueba bilateral correspondiente."
+  },
+  {
+   "id": "ex_m5_10",
+   "module": "m5",
+   "type": "numeric",
+   "difficulty": 3,
+   "lessonRef": "m5_l2",
+   "context": "Rendimiento de dos variedades de papa (t/ha). Variedad 1: x̄ = 24,1; s = 3,2; n = 20. Variedad 2: x̄ = 21,9; s = 4,0; n = 25.",
+   "prompt": "¿Cuál es el estadístico t de Welch? (dos decimales)",
+   "answer": 2.05,
+   "tol": 0.01,
+   "decimals": 2,
+   "hint": "El error estándar es √(s1²/n1 + s2²/n2).",
+   "traps": [
+    {
+     "value": 2.0,
+     "tol": 0.006,
+     "feedback": "Usaste la varianza combinada (t clásica). Welch usa √(s1²/n1 + s2²/n2) y no supone varianzas iguales."
+    },
+    {
+     "value": 0.43,
+     "tol": 0.01,
+     "tag": "de_vs_error_estandar",
+     "feedback": "Dividiste entre √(s1² + s2²), sin los tamaños de muestra: eso mezcla desviación estándar con error estándar."
+    }
+   ],
+   "verify": [
+    {
+     "fn": "test_diff_means",
+     "args": {
+      "mean1": 24.1,
+      "sd1": 3.2,
+      "n1": 20,
+      "mean2": 21.9,
+      "sd2": 4.0,
+      "n2": 25,
+      "tail": "two"
+     },
+     "field": "statistic",
+     "value": 2.05,
+     "tol": 0.001
+    }
+   ],
+   "explanation": "EE = √(3,2²/20 + 4,0²/25) = √(0,512 + 0,640) ≈ 1,073. t = 2,2/1,073 ≈ 2,05, con ≈ 43 gl y p ≈ 0,047."
+  }
+ ]
+}

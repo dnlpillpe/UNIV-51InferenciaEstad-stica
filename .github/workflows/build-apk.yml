@@ -1,0 +1,88 @@
+name: Build APK
+
+on:
+  push:
+    branches: [main]
+    tags: ['v*']
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  apk:
+    name: Compilar APK de Android
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: '17'
+
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+
+      - name: Generar las plataformas nativas
+        run: |
+          flutter create --platforms=android,ios --project-name inferencia_estadistica --org com.inferenciaestadistica .
+          bash tool/postcreate.sh
+
+      - run: flutter pub get
+
+      - name: Icono del lanzador
+        run: dart run flutter_launcher_icons
+
+      - name: Contenido y cifras
+        run: python3 tool/validate_content.py
+
+      # Informativo aquí: el estado estricto de las pruebas está en ci.yml.
+      # Así un test roto no impide obtener un APK para pruebas de campo.
+      - name: Pruebas (informativo)
+        run: flutter test
+        continue-on-error: true
+
+      - name: Firma de release (opcional, con secretos)
+        if: ${{ env.KEYSTORE_BASE64 != '' }}
+        env:
+          KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}
+          KEYSTORE_PASSWORD: ${{ secrets.KEYSTORE_PASSWORD }}
+          KEY_ALIAS: ${{ secrets.KEY_ALIAS }}
+          KEY_PASSWORD: ${{ secrets.KEY_PASSWORD }}
+        run: bash tool/configure_signing.sh
+
+      - name: APK universal
+        run: flutter build apk --release
+
+      - name: APK por arquitectura
+        run: flutter build apk --release --split-per-abi
+
+      - name: Renombrar artefactos
+        run: |
+          VERSION=$(grep '^version:' pubspec.yaml | awk '{print $2}' | cut -d+ -f1)
+          mkdir -p dist
+          cp build/app/outputs/flutter-apk/app-release.apk "dist/inferencia-estadistica-v${VERSION}.apk"
+          for f in build/app/outputs/flutter-apk/app-*-release.apk; do
+            abi=$(basename "$f" | sed -E 's/app-(.*)-release.apk/\1/')
+            cp "$f" "dist/inferencia-estadistica-v${VERSION}-${abi}.apk"
+          done
+          ls -la dist
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: inferencia-estadistica-apk
+          path: dist/*.apk
+          retention-days: 30
+
+      - name: Publicar release (solo en etiquetas v*)
+        if: startsWith(github.ref, 'refs/tags/v')
+        uses: softprops/action-gh-release@v2
+        with:
+          files: dist/*.apk
+          generate_release_notes: true
+    env:
+      KEYSTORE_BASE64: ${{ secrets.KEYSTORE_BASE64 }}

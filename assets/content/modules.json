@@ -1,0 +1,454 @@
+{
+  "careers": [
+    "Ingeniería de Minas", "Ingeniería de Sistemas", "Ingeniería Electrónica",
+    "Ingeniería Ambiental", "Biología", "Estadística", "Administración", "Economía",
+    "Contabilidad", "Psicología", "Humanidades", "Desarrollo personal", "Otra carrera"
+  ],
+  "modules": [
+    {
+      "id": "m1", "number": 1, "color": "#2E86AB", "icon": "groups", "labId": "lab1",
+      "title": "Población y muestra",
+      "subtitle": "De quién hablan tus datos",
+      "keyQuestion": "¿A quién representan realmente las personas que respondieron?",
+      "description": "Antes de calcular nada, la inferencia exige saber qué población se quiere conocer y cómo se eligió la muestra. Aquí aprendes a distinguir parámetro de estadístico y, sobre todo, a detectar el sesgo: el error que ningún tamaño de muestra corrige.",
+      "competency": "Evalúa si una muestra permite generalizar a la población de interés y distingue sesgo de variabilidad muestral.",
+      "lessons": [
+        {
+          "id": "m1_l1", "minutes": 4,
+          "title": "Parámetros y estadísticos",
+          "summary": "La población tiene parámetros fijos y desconocidos; la muestra produce estadísticos que cambian.",
+          "cards": [
+            {"type": "concept", "title": "Dos mundos", "visual": "population_sample",
+             "body": "La población es el conjunto completo sobre el que quieres concluir: todos los estudiantes de la universidad, todas las facturas del año, todo el mineral del tajo. La muestra es la parte que realmente observas. La inferencia es el puente entre ambas: usar lo que viste para decir algo, con un grado de incertidumbre declarado, sobre lo que no viste."},
+            {"type": "formula", "title": "Notación que conviene no mezclar",
+             "formula": "Población: μ, σ, p     Muestra: x̄, s, p̂",
+             "body": "Las letras griegas (μ media, σ desviación, p proporción) son parámetros: números fijos que describen la población y casi nunca conoces. x̄, s y p̂ son estadísticos: se calculan con la muestra y cambian si tomas otra muestra."},
+            {"type": "example", "title": "Un caso concreto",
+             "body": "Una municipalidad quiere saber qué proporción de hogares recicla. Encuesta a 400 hogares al azar y 132 dicen que sí. p̂ = 132/400 = 0,33 es un estadístico: lo conoces con certeza. p, la proporción real en toda la ciudad, es el parámetro: es lo que quieres estimar."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "parametro_vs_estadistico",
+             "body": "«La media de la población es 0,33 porque así salió en la encuesta». No: 0,33 es lo que salió en esta muestra. Otra muestra daría 0,31 o 0,36. Las hipótesis y los intervalos siempre hablan del parámetro, nunca del estadístico, porque el estadístico ya lo conoces."},
+            {"type": "check", "title": "Comprueba",
+             "question": "En un control de calidad se miden 50 baterías de un lote de 10 000 y la duración media es 18,2 h. ¿Qué es 18,2 h?",
+             "options": ["El parámetro μ del lote", "Un estadístico x̄ de la muestra", "La desviación estándar σ"],
+             "answer": 1,
+             "explanation": "Se calculó con las 50 baterías medidas: es x̄. La duración media de las 10 000 (μ) sigue siendo desconocida."}
+          ]
+        },
+        {
+          "id": "m1_l2", "minutes": 5,
+          "title": "Cómo se elige una muestra",
+          "summary": "Solo el azar controlado permite medir la incertidumbre. Cuatro diseños probabilísticos y cuándo usar cada uno.",
+          "cards": [
+            {"type": "concept", "title": "Por qué el azar",
+             "body": "Elegir al azar no es descuido: es la única manera de que nadie —ni el investigador ni el encuestado— decida quién entra en la muestra. Gracias a eso, las diferencias entre muestra y población se comportan de forma predecible y se pueden cuantificar con un margen de error."},
+            {"type": "concept", "title": "Cuatro diseños probabilísticos",
+             "body": "Aleatorio simple: todos tienen la misma probabilidad y se eligen de un listado completo. Sistemático: uno de cada k, desde un inicio aleatorio. Estratificado: divides la población en grupos homogéneos (estratos) y sorteas dentro de cada uno. Por conglomerados: sorteas grupos completos (aulas, manzanas, lotes) y observas a todos sus miembros."},
+            {"type": "example", "title": "¿Estratos o conglomerados?",
+             "body": "Estratos: grupos distintos entre sí pero homogéneos por dentro (distritos con ingresos muy diferentes); se muestrea en todos. Conglomerados: grupos parecidos entre sí, cada uno una «miniatura» de la población (aulas de un mismo curso); se sortean algunos. El estratificado gana precisión; el de conglomerados ahorra costo."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "estratificado_vs_conglomerados",
+             "body": "Sortear 5 colegios y encuestar a todos sus alumnos no es estratificado: es por conglomerados. Si en cambio encuestas 20 alumnos al azar en cada uno de los 43 distritos, sí es estratificado. La pregunta clave: ¿sorteas dentro de cada grupo o sorteas los grupos?"},
+            {"type": "check", "title": "Comprueba",
+             "question": "Una auditora ordena las 3 600 facturas por número y revisa la 7.ª, la 43.ª, la 79.ª... (una de cada 36). ¿Qué diseño usa?",
+             "options": ["Aleatorio simple", "Sistemático", "Por conglomerados"],
+             "answer": 1,
+             "explanation": "Uno de cada k = 36 desde un inicio aleatorio (la 7.ª): sistemático. Funciona bien salvo que el listado tenga un patrón periódico que coincida con k."}
+          ]
+        },
+        {
+          "id": "m1_l3", "minutes": 5,
+          "title": "Sesgo: el error que no se va con n",
+          "summary": "Una muestra enorme mal elegida sigue apuntando al lugar equivocado.",
+          "cards": [
+            {"type": "concept", "title": "Sesgo y variabilidad", "visual": "bias_variance",
+             "body": "Imagina una diana. La variabilidad es cuánto se dispersan los disparos; el sesgo es cuánto se aleja su centro del blanco. Aumentar la muestra agrupa los disparos, pero no los mueve hacia el blanco. Si el método apunta mal, más datos solo te dan más confianza en una respuesta equivocada."},
+            {"type": "concept", "title": "Fuentes típicas de sesgo",
+             "body": "Conveniencia: encuestas a quien tienes a mano (la puerta del campus). Respuesta voluntaria: responde quien quiere, que suele ser quien tiene una opinión fuerte. No respuesta: los que no contestan son diferentes de los que sí. Cobertura: el listado del que sorteas deja fuera a una parte de la población."},
+            {"type": "example", "title": "Una lección de 1936",
+             "body": "La revista Literary Digest envió unos diez millones de papeletas y recibió unos 2,4 millones de respuestas; pronosticó una amplia victoria de Landon. Ganó Roosevelt con alrededor del 61 % del voto. Sus listados (suscriptores, guías telefónicas, registros de automóviles) sobrerrepresentaban a los hogares acomodados, y además respondía quien quería. Encuestas mucho más pequeñas, como la de Gallup, acertaron el ganador."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "muestra_grande_corrige_sesgo",
+             "body": "«Tenemos 5 000 respuestas, así que el resultado es fiable». El tamaño reduce la variabilidad, no el sesgo. 5 000 respuestas voluntarias pueden estar peor que 300 elegidas al azar. Primero pregunta cómo se eligió la muestra; solo después importa cuántos son."},
+            {"type": "check", "title": "Comprueba",
+             "question": "Una app de delivery publica una encuesta en su cuenta de Instagram y obtiene 8 000 votos: 82 % prefiere pedir comida los fines de semana. ¿Qué es lo más preocupante?",
+             "options": ["Que 8 000 es poco para una ciudad grande", "Que responden solo seguidores que eligieron votar", "Que el porcentaje es demasiado alto"],
+             "answer": 1,
+             "explanation": "Cobertura (solo seguidores) y respuesta voluntaria. Con ese diseño, ni 80 000 votos permitirían generalizar a la población de la ciudad."}
+          ]
+        },
+        {
+          "id": "m1_l4", "minutes": 4,
+          "title": "Variabilidad muestral",
+          "summary": "Muestras distintas dan resultados distintos. Eso no es un error: es la materia prima de la inferencia.",
+          "cards": [
+            {"type": "concept", "title": "Cada muestra cuenta una versión",
+             "body": "Si diez compañeros toman cada uno una muestra aleatoria de 30 estudiantes y calculan la estatura media, obtendrán diez números distintos. Nadie se equivocó: es la variabilidad muestral. Lo notable es que esa variación tiene un patrón, y conocer ese patrón es lo que permite construir márgenes de error."},
+            {"type": "concept", "title": "Lo que sí controla n",
+             "body": "Con muestras aleatorias, a mayor n, más se parecen entre sí las estimaciones y más se acercan al parámetro. Ese es el efecto del tamaño: reduce la dispersión de las estimaciones. Pero solo funciona si el método es aleatorio; en el siguiente módulo verás exactamente cuánto se reduce."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "muestra_pequena_representativa",
+             "body": "«Encuesté a 12 personas y el 75 % opina igual, así que la población piensa así». Con muestras pequeñas las proporciones saltan mucho de una muestra a otra: con n = 12, un resultado de 75 % es perfectamente compatible con que la población esté dividida al 50 %."},
+            {"type": "warning", "title": "No confundas con error de medición", "tag": "variabilidad_muestral_error",
+             "body": "El margen de error de una encuesta no significa que alguien midió mal. Mide cuánto podría cambiar el resultado solo por el azar de quién entró en la muestra. Errores de medición, preguntas mal redactadas o gente que miente son otro problema, y el margen de error no los incluye."},
+            {"type": "check", "title": "Comprueba",
+             "question": "Dos encuestas aleatorias bien hechas, del mismo tamaño y en la misma semana, dan 44 % y 47 % de intención de voto. ¿Qué es lo más razonable?",
+             "options": ["Una de las dos está mal hecha", "Es variabilidad muestral esperable", "La opinión cambió entre ambas"],
+             "answer": 1,
+             "explanation": "Con n ≈ 1 000, el error estándar de una proporción cercana a 0,45 es alrededor de 1,6 puntos: una diferencia de 3 puntos entre dos muestras es normal."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m2", "number": 2, "color": "#6C4AB6", "icon": "stacked", "labId": "lab2",
+      "recommendedAfter": "m1",
+      "title": "Distribución muestral",
+      "subtitle": "El experimento imaginario, hecho real",
+      "keyQuestion": "Si repitiera el muestreo mil veces, ¿cómo se repartirían mis resultados?",
+      "description": "Toda la inferencia descansa en una idea que casi nunca se ve: la distribución de un estadístico a lo largo de muchas muestras. Aquí la construyes muestra a muestra, descubres el error estándar y compruebas el Teorema del Límite Central con tus propias simulaciones.",
+      "competency": "Explica y usa la distribución muestral de la media y de la proporción, el error estándar y el Teorema del Límite Central.",
+      "lessons": [
+        {
+          "id": "m2_l1", "minutes": 5,
+          "title": "Tres distribuciones que no debes mezclar",
+          "summary": "Población, una muestra y la distribución muestral: tres histogramas con significados distintos.",
+          "cards": [
+            {"type": "concept", "title": "Tres histogramas", "visual": "three_distributions",
+             "body": "1) La población: todos los valores individuales (el tiempo de espera de cada cliente). 2) Una muestra: los n valores que observaste. 3) La distribución muestral: la media de muchas muestras distintas, cada una de tamaño n. Las dos primeras hablan de individuos; la tercera habla de medias."},
+            {"type": "concept", "title": "Por qué la tercera importa",
+             "body": "Cuando dices «x̄ = 7,2 min», ese número es un punto de la tercera distribución. Saber cuán ancha es te dice cuánto puede alejarse tu x̄ de μ solo por azar. Toda la inferencia —intervalos y pruebas— se construye sobre ella."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "muestra_vs_distribucion_muestral",
+             "body": "«Mi muestra de 40 datos tiene forma asimétrica, así que la distribución muestral también». No: la forma de tus 40 datos refleja la población. La distribución muestral es la de muchas medias, y con n = 40 suele ser casi normal aunque los datos no lo sean."},
+            {"type": "check", "title": "Comprueba",
+             "question": "Tomas 500 muestras de n = 25 y dibujas el histograma de sus 500 medias. ¿Qué distribución dibujaste?",
+             "options": ["La de la población", "La de una muestra", "Una aproximación a la distribución muestral de x̄"],
+             "answer": 2,
+             "explanation": "Cada punto es la media de una muestra: es la distribución muestral de x̄ para n = 25, aproximada con 500 repeticiones."}
+          ]
+        },
+        {
+          "id": "m2_l2", "minutes": 5,
+          "title": "El error estándar",
+          "summary": "La desviación estándar de la distribución muestral: σ/√n. Y por qué la precisión cuesta caro.",
+          "cards": [
+            {"type": "formula", "title": "Error estándar de la media",
+             "formula": "EE(x̄) = σ / √n",
+             "body": "σ mide cuánto varían los individuos; el error estándar mide cuánto varían las medias. Con σ = 12 y n = 36, EE = 12/6 = 2. Las medias muestrales se dispersan seis veces menos que los datos individuales."},
+            {"type": "concept", "title": "La ley de la raíz cuadrada", "visual": "se_sqrt_n",
+             "body": "Para reducir el error estándar a la mitad hay que cuadruplicar n, no duplicarlo: con σ = 12, n = 36 da EE = 2 y n = 144 da EE = 1. Por eso pasar de 1 000 a 2 000 encuestados mejora poco y cuesta el doble."},
+            {"type": "formula", "title": "Error estándar de una proporción",
+             "formula": "EE(p̂) = √( p(1 − p) / n )",
+             "body": "Con p = 0,40 y n = 100: √(0,24/100) ≈ 0,049, es decir, unos 4,9 puntos porcentuales. Es máximo cuando p = 0,5; por eso las fórmulas de tamaño de muestra usan 0,5 cuando no hay información previa."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "de_vs_error_estandar",
+             "body": "Desviación estándar y error estándar no son sinónimos. s describe la dispersión de los datos y no se reduce al aumentar n. El error estándar s/√n describe la precisión de x̄ y sí disminuye. Si en un informe ves «± s», pregunta cuál de las dos es."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "precision_lineal_n",
+             "body": "«Si duplico la muestra, el margen de error se reduce a la mitad». No: se reduce a 1/√2 ≈ 0,71, es decir, un 29 %. Para la mitad hace falta cuatro veces más muestra."},
+            {"type": "check", "title": "Comprueba",
+             "question": "Con n = 50 el error estándar de una media es 3. ¿Qué n se necesita para que sea 1?",
+             "options": ["150", "450", "300"],
+             "answer": 1,
+             "explanation": "Reducir el EE a la tercera parte exige multiplicar n por 3² = 9: 50 × 9 = 450."}
+          ]
+        },
+        {
+          "id": "m2_l3", "minutes": 5,
+          "title": "Teorema del Límite Central",
+          "summary": "Las medias se vuelven normales aunque los datos no lo sean. Qué dice el teorema y qué no dice.",
+          "cards": [
+            {"type": "concept", "title": "Lo que afirma", "visual": "clt_shapes",
+             "body": "Si las muestras son aleatorias e independientes y n es suficientemente grande, la distribución muestral de x̄ es aproximadamente normal, con media μ y error estándar σ/√n, sea cual sea la forma de la población."},
+            {"type": "concept", "title": "¿Cuánto es «suficientemente grande»?",
+             "body": "Si la población es casi simétrica, n = 10 o 15 ya basta. Si es muy asimétrica (tiempos de espera, ingresos, montos de facturas), puede hacer falta n = 40 o más. La regla «n ≥ 30» es una orientación, no una ley: en el laboratorio puedes comprobar dónde falla."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "tlc_datos_normales",
+             "body": "El TLC no dice que los datos se vuelvan normales al aumentar n. Una muestra grande de tiempos de espera sigue siendo asimétrica: de hecho, cuanto más grande, más se parece a la población. Lo que se vuelve normal es la distribución de las medias."},
+            {"type": "check", "title": "Comprueba",
+             "question": "Los montos de 5 000 facturas tienen una distribución muy asimétrica a la derecha. Tomas muestras de n = 60. ¿Qué forma esperas para el histograma de muchas medias muestrales?",
+             "options": ["Muy asimétrica, igual que las facturas", "Aproximadamente normal", "Uniforme"],
+             "answer": 1,
+             "explanation": "Con n = 60 el TLC suele funcionar incluso con asimetría fuerte: las medias se reparten de forma aproximadamente normal alrededor de μ."}
+          ]
+        },
+        {
+          "id": "m2_l4", "minutes": 5,
+          "title": "De la distribución muestral a la probabilidad",
+          "summary": "Con μ, σ y n puedes calcular qué tan raro es un resultado muestral.",
+          "cards": [
+            {"type": "formula", "title": "Estandarizar una media",
+             "formula": "Z = (x̄ − μ) / (σ / √n)",
+             "body": "Cuenta cuántos errores estándar separan a x̄ de μ. Es la misma idea que el puntaje z de un individuo, pero usando el error estándar en el denominador."},
+            {"type": "example", "title": "¿Qué tan rara es una media?",
+             "body": "Las estaturas de una universidad tienen μ = 165 cm y σ = 9 cm. En una muestra aleatoria de 36, EE = 9/6 = 1,5. ¿Probabilidad de que x̄ supere 168? Z = (168 − 165)/1,5 = 2, y P(Z > 2) ≈ 0,023. Un individuo de 168 cm es común; una media de 168 en 36 personas es rara."},
+            {"type": "concept", "title": "Proporciones: cuándo usar la normal",
+             "body": "p̂ se aproxima a una normal con media p y error estándar √(p(1−p)/n) si se esperan al menos 10 éxitos y 10 fracasos: np ≥ 10 y n(1−p) ≥ 10. Con p = 0,03 y n = 100 solo esperas 3 éxitos: la aproximación normal no es fiable."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "condiciones_ignoradas",
+             "body": "Aplicar la normal a p̂ sin revisar np ≥ 10, o el TLC a una muestra de 8 datos muy asimétricos, produce probabilidades con apariencia precisa y valor dudoso. Las condiciones no son un trámite: son la razón por la que la fórmula funciona."},
+            {"type": "check", "title": "Comprueba",
+             "question": "μ = 50, σ = 10, n = 25. ¿Entre qué valores cae aproximadamente el 95 % de las medias muestrales?",
+             "options": ["Entre 30 y 70", "Entre 46 y 54", "Entre 48 y 52"],
+             "answer": 1,
+             "explanation": "EE = 10/5 = 2; el 95 % central está a ±1,96·2 ≈ ±4 de μ: entre 46 y 54. Entre 30 y 70 sería para individuos, no para medias."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m3", "number": 3, "color": "#E09F3E", "icon": "interval", "labId": "lab3",
+      "recommendedAfter": "m2",
+      "title": "Intervalos de confianza",
+      "subtitle": "Estimar con honestidad",
+      "keyQuestion": "¿Qué rango de valores del parámetro es compatible con mis datos?",
+      "description": "Un número solo no basta: una estimación profesional incluye su margen de error. Construyes intervalos para medias y proporciones, eliges el nivel de confianza, calculas el tamaño de muestra y —lo más difícil— aprendes a interpretar correctamente qué significa «95 % de confianza».",
+      "competency": "Construye, interpreta y comunica intervalos de confianza para medias y proporciones, y determina el tamaño de muestra necesario.",
+      "lessons": [
+        {
+          "id": "m3_l1", "minutes": 5,
+          "title": "La idea del intervalo",
+          "summary": "Estimación puntual ± margen de error, y de dónde sale el 1,96.",
+          "cards": [
+            {"type": "concept", "title": "De la distribución muestral al intervalo", "visual": "normal_95",
+             "body": "El 95 % de las medias muestrales cae a menos de 1,96 errores estándar de μ. Dándole la vuelta: en el 95 % de las muestras, μ está a menos de 1,96 errores estándar de x̄. Esa inversión es la idea completa del intervalo de confianza."},
+            {"type": "formula", "title": "Intervalo para la media (σ conocida)",
+             "formula": "x̄ ± z · σ/√n",
+             "body": "z depende del nivel: 1,645 para 90 %, 1,960 para 95 %, 2,576 para 99 %. El producto z·σ/√n es el margen de error."},
+            {"type": "example", "title": "Tiempo de atención",
+             "body": "Un banco mide 36 atenciones: x̄ = 24,6 min. Por registros históricos σ = 6 min. EE = 6/6 = 1. IC 95 %: 24,6 ± 1,96·1 = (22,64; 26,56) minutos. Es un rango de valores plausibles para el tiempo medio de todas las atenciones."},
+            {"type": "concept", "title": "Tres palancas",
+             "body": "El margen de error crece con el nivel de confianza y con σ, y disminuye con √n. No hay magia: más confianza siempre cuesta un intervalo más ancho, salvo que pagues con más datos."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "confianza_vs_amplitud",
+             "body": "«Un IC al 99 % es más preciso que uno al 95 %». Es al revés: para estar más seguro de atrapar a μ, el intervalo debe ser más ancho. Más confianza, menos precisión, con la misma muestra."}
+          ]
+        },
+        {
+          "id": "m3_l2", "minutes": 6,
+          "title": "Qué significa 95 % de confianza",
+          "summary": "La confianza es una propiedad del método, no de un intervalo concreto.",
+          "cards": [
+            {"type": "concept", "title": "La lectura correcta", "visual": "ci_rain_mini",
+             "body": "Si repitieras el muestreo muchas veces y construyeras un intervalo con cada muestra, alrededor del 95 % de esos intervalos contendría a μ. El 95 % describe la fiabilidad del procedimiento. Tu intervalo concreto lo contiene o no; no lo sabes, y por eso hablas de confianza."},
+            {"type": "warning", "title": "Lectura incorrecta 1", "tag": "ic_probabilidad_parametro",
+             "body": "«Hay un 95 % de probabilidad de que μ esté entre 22,6 y 26,6». En el enfoque clásico μ es fijo y el intervalo ya calculado también: no queda nada aleatorio. La forma segura de decirlo: «Con 95 % de confianza, μ está entre 22,6 y 26,6», entendiendo que la confianza viene del método."},
+            {"type": "warning", "title": "Lectura incorrecta 2", "tag": "ic_contiene_datos",
+             "body": "«El 95 % de las atenciones dura entre 22,6 y 26,6 minutos». El intervalo es para la media, no para los individuos. Con σ = 6, las atenciones individuales varían mucho más: muchas duran menos de 20 o más de 30 minutos."},
+            {"type": "warning", "title": "Lectura incorrecta 3", "tag": "ic_sobre_estadistico",
+             "body": "«Con 95 % de confianza, x̄ está entre 22,6 y 26,6». x̄ = 24,6 ya se conoce: está exactamente en el centro del intervalo. El intervalo es para μ."},
+            {"type": "check", "title": "Comprueba",
+             "question": "Cien equipos de investigación independientes calculan cada uno un IC al 90 % para la misma μ. ¿Cuántos intervalos esperas que NO contengan a μ?",
+             "options": ["Ninguno", "Alrededor de 10", "Alrededor de 90"],
+             "answer": 1,
+             "explanation": "El método captura a μ el 90 % de las veces: alrededor de 10 de los 100 intervalos fallarán, y ningún equipo sabe si el suyo es uno de ellos."}
+          ]
+        },
+        {
+          "id": "m3_l3", "minutes": 5,
+          "title": "σ desconocida: la t de Student",
+          "summary": "Cuando estimas σ con s, el valor crítico debe crecer para compensar esa incertidumbre extra.",
+          "cards": [
+            {"type": "concept", "title": "El problema de usar s", "visual": "t_vs_z",
+             "body": "En la práctica σ casi nunca se conoce y se reemplaza por s. Pero s también varía de muestra en muestra: con n pequeño a veces sale bastante menor que σ y el intervalo queda demasiado estrecho. La distribución t, con colas más gruesas que la normal, corrige esto."},
+            {"type": "formula", "title": "Intervalo t para la media",
+             "formula": "x̄ ± t(n−1) · s/√n",
+             "body": "Los grados de libertad son n − 1. Valores críticos al 95 %: 2,262 con 9 gl, 2,045 con 29 gl; frente a 1,960 de la normal. Con muestras grandes t y z casi coinciden; con muestras pequeñas la diferencia importa."},
+            {"type": "example", "title": "Cuánto importa",
+             "body": "Usar z = 1,96 con s en muestras de n = 5 no captura a μ el 95 % de las veces, sino alrededor del 88 %. Con n = 30 el atajo da un 94 %. En el laboratorio puedes ver esa caída con tus propios intervalos."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "z_en_lugar_de_t",
+             "body": "Si σ es desconocida y la estimas con s, corresponde t con n − 1 grados de libertad. Usar z no es «redondear»: produce intervalos que prometen más confianza de la que dan, sobre todo con n pequeño."},
+            {"type": "check", "title": "Comprueba",
+             "question": "n = 10, x̄ = 52, s = 8, σ desconocida. ¿Qué valor crítico corresponde a un IC al 95 %?",
+             "options": ["1,960", "2,262", "2,228"],
+             "answer": 1,
+             "explanation": "σ desconocida → t con n − 1 = 9 gl: 2,262. 2,228 corresponde a 10 gl, un error frecuente al olvidar restar 1."}
+          ]
+        },
+        {
+          "id": "m3_l4", "minutes": 6,
+          "title": "Proporciones y tamaño de muestra",
+          "summary": "El intervalo para p, cuántos datos hacen falta y qué deja fuera el margen de error.",
+          "cards": [
+            {"type": "formula", "title": "Intervalo para una proporción",
+             "formula": "p̂ ± z · √( p̂(1 − p̂) / n )",
+             "body": "Válido si hay al menos 10 éxitos y 10 fracasos en la muestra. Ejemplo: 210 de 500 clientes (p̂ = 0,42) prefieren el nuevo empaque. EE ≈ 0,0221; IC 95 %: 0,42 ± 0,043 = (0,377; 0,463)."},
+            {"type": "formula", "title": "Tamaño de muestra",
+             "formula": "Media: n = (z·σ/E)²     Proporción: n = z²·p(1−p)/E²",
+             "body": "E es el margen de error deseado. Siempre se redondea hacia arriba. Para una proporción sin información previa se usa p = 0,5: con E = 0,03 y 95 %, n = 1 068. Por eso tantas encuestas nacionales tienen alrededor de mil casos."},
+            {"type": "concept", "title": "El tamaño no depende de la población (casi)",
+             "body": "Si la población es mucho mayor que la muestra, el margen de error depende de n, no de N. Mil personas bien elegidas informan casi igual de bien sobre una ciudad de 100 000 habitantes que sobre un país de 30 millones."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "margen_incluye_sesgo",
+             "body": "«El margen de error es ±3 puntos, así que el valor real está a 3 puntos como mucho». El margen solo cubre la variabilidad del muestreo aleatorio. No incluye no respuesta, preguntas sesgadas ni listados incompletos: con esos problemas el error real puede ser mucho mayor."},
+            {"type": "check", "title": "Comprueba",
+             "question": "Una encuesta con n = 1 068 tiene margen ±3 puntos al 95 %. ¿Qué n aproximado da ±1,5 puntos?",
+             "options": ["2 136", "4 272", "1 602"],
+             "answer": 1,
+             "explanation": "Reducir el margen a la mitad exige cuadruplicar n: 1 068 × 4 = 4 272."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m4", "number": 4, "color": "#D1495B", "icon": "gavel", "labId": "lab4",
+      "recommendedAfter": "m3",
+      "title": "Pruebas de hipótesis",
+      "subtitle": "Evidencia contra el azar",
+      "keyQuestion": "¿Mi resultado es difícil de explicar si no pasa nada?",
+      "description": "Una prueba de hipótesis responde una pregunta precisa: si la hipótesis nula fuera cierta, ¿qué tan sorprendentes serían mis datos? Planteas hipótesis sobre parámetros, simulas el mundo donde H0 es cierta, interpretas el p-valor sin mitos y conoces el precio de cada decisión: errores tipo I, tipo II y potencia.",
+      "competency": "Plantea hipótesis, interpreta el p-valor, decide con un nivel de significancia y explica los riesgos de error de su decisión.",
+      "lessons": [
+        {
+          "id": "m4_l1", "minutes": 4,
+          "title": "La lógica del juicio",
+          "summary": "H0 es la presunción de inocencia; los datos son la evidencia; el p-valor mide cuánto sorprenden.",
+          "cards": [
+            {"type": "concept", "title": "Un tribunal estadístico",
+             "body": "En un juicio se presume inocencia (H0) y la fiscalía debe aportar evidencia suficiente para condenar (aceptar H1). Si la evidencia no alcanza, el veredicto es «no culpable», que no es lo mismo que «inocente probado». Una prueba de hipótesis funciona igual."},
+            {"type": "concept", "title": "El razonamiento en tres pasos",
+             "body": "1) Supón que H0 es cierta. 2) Calcula qué tan probable sería obtener un resultado tan extremo como el tuyo en ese mundo. 3) Si es muy improbable, los datos contradicen a H0 y la rechazas; si no, los datos son compatibles con H0 y no la rechazas."},
+            {"type": "example", "title": "La moneda del compañero",
+             "body": "Un compañero dice que adivina el lado de una moneda. Acierta 16 de 25. Si solo adivinara al azar (p = 0,5), obtener 16 o más aciertos pasa en el 11 % de los intentos. No es tan raro: 16 de 25 no demuestra ningún don."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "no_rechazar_es_aceptar",
+             "body": "No rechazar H0 no prueba H0. Significa que la evidencia no fue suficiente, quizá porque el efecto no existe, quizá porque la muestra era pequeña. Por eso se dice «no se rechaza H0» y no «se acepta H0»."}
+          ]
+        },
+        {
+          "id": "m4_l2", "minutes": 5,
+          "title": "Plantear las hipótesis",
+          "summary": "Sobre parámetros, con la igualdad en H0 y la dirección decidida antes de ver los datos.",
+          "cards": [
+            {"type": "formula", "title": "La forma general",
+             "formula": "H0: μ = μ0     H1: μ ≠ μ0  |  μ < μ0  |  μ > μ0",
+             "body": "H0 contiene la igualdad y representa «no hay efecto» o «se cumple lo declarado». H1 es lo que se quiere demostrar, lo que requiere evidencia. En pruebas unilaterales H0 puede escribirse con ≤ o ≥; el cálculo se hace en el valor frontera μ0."},
+            {"type": "concept", "title": "¿Qué va en H1?",
+             "body": "Lo que conlleva una acción o una afirmación nueva. Un proveedor promete 85 % de germinación: si quieres reclamar, necesitas evidencia de que es menor → H1: p < 0,85. Si el tajo se explota solo si la ley supera 0,80 %, la viabilidad debe demostrarse → H1: μ > 0,80."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "hipotesis_con_estadistico",
+             "body": "«H0: x̄ = 50». Las hipótesis nunca se plantean sobre estadísticos: x̄ ya lo conoces y no hay nada que probar. Se plantean sobre μ, p o la diferencia μ1 − μ2 de la población."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "cola_mal_elegida",
+             "body": "Elegir la cola después de ver los datos («como x̄ salió mayor, pruebo μ > μ0») duplica en la práctica el riesgo de error tipo I. La dirección se decide con la pregunta de negocio o de investigación, antes de mirar los resultados. Ante la duda, bilateral."},
+            {"type": "check", "title": "Comprueba",
+             "question": "Una empresa afirma que sus baterías duran en promedio 20 h. Una asociación de consumidores sospecha que duran menos. ¿Qué hipótesis alternativa plantea?",
+             "options": ["H1: x̄ < 20", "H1: μ < 20", "H1: μ ≠ 20"],
+             "answer": 1,
+             "explanation": "Sobre el parámetro μ y en la dirección de la sospecha que requiere evidencia: μ < 20."}
+          ]
+        },
+        {
+          "id": "m4_l3", "minutes": 6,
+          "title": "El p-valor",
+          "summary": "La probabilidad, suponiendo H0 cierta, de obtener un resultado al menos tan extremo como el observado.",
+          "cards": [
+            {"type": "concept", "title": "Definición", "visual": "p_value_tail",
+             "body": "El p-valor es P(resultado tan extremo o más que el observado | H0 cierta). Es el área de la cola más allá del estadístico observado en la distribución que tendría si H0 fuera verdad. Un p-valor pequeño significa: «si H0 fuera cierta, esto sería raro»."},
+            {"type": "example", "title": "Leerlo en contexto",
+             "body": "Prueba de la moneda: p ≈ 0,115. Lectura: si el compañero adivinara al azar, en un 11,5 % de las series de 25 lanzamientos acertaría 16 o más. Ese es todo el contenido del p-valor: una frecuencia en un mundo hipotético."},
+            {"type": "warning", "title": "Lectura incorrecta 1", "tag": "p_prob_h0",
+             "body": "«p = 0,03 significa que hay un 3 % de probabilidad de que H0 sea cierta». El p-valor se calcula suponiendo que H0 es cierta; no puede ser a la vez la probabilidad de que lo sea. Para eso haría falta otro enfoque (bayesiano) con información adicional."},
+            {"type": "warning", "title": "Lectura incorrecta 2", "tag": "p_azar",
+             "body": "«p = 0,03: hay un 3 % de probabilidad de que el resultado se deba al azar». Suena parecido pero es la misma confusión: el p-valor no mide la probabilidad de la explicación «azar», sino qué tan frecuente sería un resultado así si todo fuera azar."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "alfa_vs_p",
+             "body": "α se fija antes de mirar los datos (0,05, 0,01): es el riesgo de error tipo I que aceptas. p se calcula con los datos. Se rechaza H0 si p ≤ α. Cambiar α después de ver p para que el resultado «salga» es una trampa."},
+            {"type": "check", "title": "Comprueba",
+             "question": "Una prueba da p = 0,20. ¿Qué afirmación es correcta?",
+             "options": ["H0 es verdadera con probabilidad 0,20", "Si H0 fuera cierta, resultados así o más extremos aparecerían en el 20 % de las muestras", "Hay 80 % de probabilidad de que H1 sea cierta"],
+             "answer": 1,
+             "explanation": "Es la única lectura que respeta la definición: una frecuencia calculada suponiendo H0 cierta."}
+          ]
+        },
+        {
+          "id": "m4_l4", "minutes": 6,
+          "title": "Decidir y equivocarse",
+          "summary": "Error tipo I, error tipo II, potencia, y la relación entre intervalos y pruebas.",
+          "cards": [
+            {"type": "concept", "title": "Dos maneras de equivocarse", "visual": "errors_matrix",
+             "body": "Error tipo I: rechazar H0 cuando es cierta (falsa alarma); su probabilidad es α. Error tipo II: no rechazar H0 cuando es falsa (efecto que se escapa); su probabilidad es β. La potencia, 1 − β, es la probabilidad de detectar un efecto que sí existe."},
+            {"type": "example", "title": "Errores con consecuencias",
+             "body": "Control de calidad de un fármaco: H0 «el lote cumple». Error tipo I: se desecha un lote bueno (pérdida económica). Error tipo II: se libera un lote defectuoso (riesgo para pacientes). Cuál error es peor depende del contexto, y eso guía la elección de α y de n."},
+            {"type": "concept", "title": "La potencia se diseña", "visual": "power_curves",
+             "body": "La potencia aumenta con el tamaño del efecto, con n y con α. Ejemplo: μ0 = 100, σ = 10, efecto real de 3 unidades, prueba unilateral al 5 %. Con n = 25 la potencia es 0,44: más de la mitad de los estudios no detectarían el efecto. Con n = 100 sube a 0,91."},
+            {"type": "concept", "title": "Intervalos y pruebas bilaterales",
+             "body": "Una prueba bilateral al 5 % rechaza H0: μ = μ0 exactamente cuando μ0 queda fuera del IC al 95 % (usando el mismo error estándar). El intervalo dice además cuán grande puede ser el efecto: por eso los informes profesionales reportan ambos."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "errores_tipo_confundidos",
+             "body": "Tipo I es rechazar una H0 verdadera; tipo II es no rechazar una H0 falsa. Un truco: el tipo I es la «falsa alarma» (condenar a un inocente), el tipo II es el «culpable que se escapa»."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "baja_potencia",
+             "body": "Un estudio con n = 12 que no rechaza H0 no demuestra que el efecto no exista: con tan poca muestra, la potencia puede ser del 20 %. «No encontramos diferencia» y «encontramos que no hay diferencia» son afirmaciones muy distintas."}
+          ]
+        }
+      ]
+    },
+    {
+      "id": "m5", "number": 5, "color": "#2A9D8F", "icon": "decision", "labId": "lab5",
+      "recommendedAfter": "m4",
+      "title": "Decisiones estadísticas",
+      "subtitle": "Del resultado a la recomendación",
+      "keyQuestion": "¿Qué decido, qué comunico y qué riesgo asumo?",
+      "description": "La inferencia profesional no termina en «p < 0,05». Eliges el procedimiento adecuado, comparas grupos, distingues significancia de importancia, evitas las trampas de las comparaciones múltiples y resuelves casos reales de once carreras distintas.",
+      "competency": "Selecciona el procedimiento inferencial adecuado, lo aplica a un problema profesional y comunica una decisión con su incertidumbre y sus riesgos.",
+      "lessons": [
+        {
+          "id": "m5_l1", "minutes": 5,
+          "title": "Elegir el procedimiento",
+          "summary": "Tres preguntas bastan: ¿qué parámetro?, ¿cuántos grupos?, ¿estimar o decidir?",
+          "cards": [
+            {"type": "concept", "title": "Tres preguntas", "visual": "decision_tree",
+             "body": "1) ¿La variable es numérica (media) o categórica (proporción)? 2) ¿Hay un grupo que se compara con un valor de referencia, o dos grupos que se comparan entre sí? 3) ¿Necesito un rango de valores (intervalo) o una decisión sí/no frente a un umbral (prueba)? Casi siempre conviene reportar ambos."},
+            {"type": "concept", "title": "Independientes o pareadas",
+             "body": "Dos grupos de personas distintas (tratamiento y control) son muestras independientes. Las mismas personas medidas antes y después son datos pareados: se analiza la diferencia de cada persona como una sola muestra. Tratar datos pareados como independientes desperdicia información."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "procedimiento_equivocado",
+             "body": "Usar un intervalo para una media cuando la variable es «sí/no», o comparar dos grupos con una prueba de una muestra, produce números que no responden la pregunta. Antes de calcular, escribe en palabras qué parámetro quieres conocer."},
+            {"type": "check", "title": "Comprueba",
+             "question": "Se mide la presión arterial de 40 pacientes antes y después de un programa de ejercicio. ¿Qué análisis corresponde?",
+             "options": ["Diferencia de medias de dos muestras independientes", "Prueba t de una muestra sobre las 40 diferencias (pareada)", "Prueba de una proporción"],
+             "answer": 1,
+             "explanation": "Son los mismos 40 pacientes: se calcula la diferencia de cada uno y se analiza esa única muestra de diferencias."}
+          ]
+        },
+        {
+          "id": "m5_l2", "minutes": 6,
+          "title": "Comparar dos grupos",
+          "summary": "Diferencia de medias (Welch) y diferencia de proporciones: el cero como referencia.",
+          "cards": [
+            {"type": "formula", "title": "Diferencia de medias (Welch)",
+             "formula": "(x̄1 − x̄2) ± t · √( s1²/n1 + s2²/n2 )",
+             "body": "No supone varianzas iguales y es la opción recomendada por defecto. Los grados de libertad se calculan con la fórmula de Welch–Satterthwaite (la app lo hace por ti) y no suelen ser enteros."},
+            {"type": "formula", "title": "Diferencia de proporciones",
+             "formula": "(p̂1 − p̂2) ± z · √( p̂1(1−p̂1)/n1 + p̂2(1−p̂2)/n2 )",
+             "body": "Para la prueba de H0: p1 = p2 se usa la proporción combinada en el error estándar, porque bajo H0 ambas son iguales."},
+            {"type": "concept", "title": "El cero es la referencia", "visual": "two_groups",
+             "body": "Si el IC para μ1 − μ2 no contiene al 0, los datos indican una diferencia real (al nivel correspondiente). Si lo contiene, la diferencia observada es compatible con el azar. Además, los extremos del intervalo te dicen qué tan grande podría ser la diferencia."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "observacional_causal",
+             "body": "Una diferencia significativa entre quienes duermen más y quienes duermen menos no prueba que dormir cause mejores notas: puede haber variables de confusión (trabajo, carga académica). Solo la asignación aleatoria de un tratamiento permite concluir causalidad."}
+          ]
+        },
+        {
+          "id": "m5_l3", "minutes": 5,
+          "title": "Significativo no es importante",
+          "summary": "Con muestras enormes todo sale significativo. El tamaño del efecto decide si importa.",
+          "cards": [
+            {"type": "concept", "title": "Dos preguntas diferentes", "visual": "effect_vs_n",
+             "body": "La significancia estadística responde «¿hay evidencia de que el efecto no es cero?». La relevancia práctica responde «¿el efecto es lo bastante grande para que importe?». La primera depende mucho de n; la segunda no."},
+            {"type": "example", "title": "0,02 segundos",
+             "body": "Una app compara dos versiones con 50 000 usuarios por grupo: el tiempo de carga baja de 2,42 a 2,40 s (s = 0,9). t ≈ −3,51 y p ≈ 0,0004. Muy significativo, y aun así 0,02 s es imperceptible: d de Cohen ≈ 0,02. No justifica una migración costosa."},
+            {"type": "formula", "title": "Tamaño del efecto: d de Cohen",
+             "formula": "d = (x̄1 − x̄2) / s_combinada",
+             "body": "Expresa la diferencia en desviaciones estándar. Referencias orientativas: 0,2 pequeño, 0,5 mediano, 0,8 grande. Lo que cuenta como importante lo define el contexto profesional, no una tabla."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "significativo_importante",
+             "body": "«p < 0,001, así que el efecto es enorme». El p-valor no mide el tamaño del efecto. Reporta siempre el intervalo de la diferencia y pregúntate si su extremo más pequeño sería relevante para la decisión."}
+          ]
+        },
+        {
+          "id": "m5_l4", "minutes": 6,
+          "title": "Trampas profesionales",
+          "summary": "Comparaciones múltiples, búsqueda del p-valor y cómo reportar con honestidad.",
+          "cards": [
+            {"type": "concept", "title": "El jardín de las comparaciones",
+             "body": "Si haces 20 pruebas independientes sobre datos donde no hay ningún efecto, con α = 0,05 la probabilidad de obtener al menos un resultado «significativo» es 1 − 0,95²⁰ ≈ 0,64. Si solo reportas ese resultado, estás publicando ruido."},
+            {"type": "concept", "title": "Buscar el p-valor",
+             "body": "Probar varios subgrupos, quitar datos «raros», cambiar de variable o seguir recolectando datos hasta que p baje de 0,05 son formas de inflar el error tipo I. La defensa profesional: definir la hipótesis, la prueba y el tamaño de muestra antes de ver los datos, y reportar todas las pruebas realizadas."},
+            {"type": "warning", "title": "Confusión frecuente", "tag": "comparaciones_multiples",
+             "body": "«De las 15 variables que analizamos, la 9.ª salió significativa». Sin corrección, eso es esperable por azar. Correcciones como la de Bonferroni (usar α/k en cada prueba) o un estudio confirmatorio posterior protegen la decisión."},
+            {"type": "concept", "title": "Un reporte profesional",
+             "body": "Incluye: pregunta y población, cómo se obtuvo la muestra, n, estimación con su intervalo de confianza, prueba con estadístico y p-valor, tamaño del efecto, supuestos verificados y limitaciones. La decisión se escribe en el lenguaje del problema, no en el de la estadística."},
+            {"type": "check", "title": "Comprueba",
+             "question": "Un equipo prueba 10 promociones distintas contra la actual (α = 0,05 cada una) y ninguna tiene efecto real. ¿Probabilidad aproximada de que al menos una salga «significativa»?",
+             "options": ["0,05", "0,40", "0,50"],
+             "answer": 1,
+             "explanation": "1 − 0,95¹⁰ ≈ 0,40. Cuatro de cada diez veces se «descubriría» una promoción ganadora que no lo es."}
+          ]
+        }
+      ]
+    }
+  ]
+}

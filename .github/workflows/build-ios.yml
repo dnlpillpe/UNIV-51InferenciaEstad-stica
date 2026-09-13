@@ -1,0 +1,24 @@
+name: Build iOS (sin firma)
+
+# Verifica que el proyecto compila para iOS. No produce un IPA instalable:
+# para eso hace falta una cuenta de Apple Developer (ver docs/05).
+on:
+  workflow_dispatch:
+
+jobs:
+  ios:
+    runs-on: macos-latest
+    timeout-minutes: 60
+    steps:
+      - uses: actions/checkout@v4
+      - uses: subosito/flutter-action@v2
+        with:
+          channel: stable
+          cache: true
+      - name: Generar las plataformas nativas
+        run: |
+          flutter create --platforms=android,ios --project-name inferencia_estadistica --org com.inferenciaestadistica .
+          bash tool/postcreate.sh
+      - run: flutter pub get
+      - run: dart run flutter_launcher_icons
+      - run: flutter build ios --release --no-codesign
