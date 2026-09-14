@@ -63,7 +63,7 @@ class GradingEngine {
   GradeResult _decision(DecisionExercise e, DecisionAnswer a) {
     final c = e.options[a.choice];
     final j = e.justifications[a.justification];
-    final score = (c.correct ? decisionWeight : 0) + (j.correct ? justificationWeight : 0);
+    final score = (c.correct ? decisionWeight : 0.0) + (j.correct ? justificationWeight : 0.0);
     return GradeResult(
       score: score,
       isDecision: true,
